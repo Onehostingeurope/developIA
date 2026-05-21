@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Develop IA - Contact | Secure Project Initialization</title>
+    <meta name="description" content="Initialize your next project with us. Architecture-first engineering for high-performance web systems and advanced machine learning integrations." />
+    
+    <!-- Scripts & Fonts -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;family=Geist:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+    
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#dbfcff",
+                        "outline-variant": "#3b494b",
+                        "secondary": "#c2c6db",
+                        "tertiary-fixed": "#d3e4fe",
+                        "background": "#101415",
+                        "on-background": "#e0e3e5",
+                        "primary-fixed": "#7df4ff",
+                        "surface-container-highest": "#323537",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#004f54",
+                        "tertiary-fixed-dim": "#b7c8e1",
+                        "surface-dim": "#101415",
+                        "on-secondary": "#2b3040",
+                        "tertiary-container": "#cadbf5",
+                        "secondary-fixed-dim": "#c2c6db",
+                        "surface": "#101415",
+                        "secondary-container": "#414658",
+                        "on-secondary-container": "#b0b4c9",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed": "#dee1f7",
+                        "surface-variant": "#323537",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-secondary-fixed": "#161b2b",
+                        "surface-tint": "#00dbe9",
+                        "error-container": "#93000a",
+                        "on-primary-container": "#006970",
+                        "on-surface-variant": "#b9cacb",
+                        "on-tertiary": "#213145",
+                        "surface-container-lowest": "#0b0f10",
+                        "on-tertiary-fixed": "#0b1c30",
+                        "outline": "#849495",
+                        "surface-bright": "#363a3b",
+                        "on-surface": "#e0e3e5",
+                        "surface-container-low": "#191c1e",
+                        "surface-container-high": "#272a2c",
+                        "on-secondary-fixed-variant": "#414658",
+                        "surface-container": "#1d2022",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed-variant": "#38485d",
+                        "on-primary": "#00363a",
+                        "error": "#ffb4ab",
+                        "on-tertiary-container": "#506076",
+                        "inverse-surface": "#e0e3e5",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#2d3133",
+                        "tertiary": "#f3f6ff",
+                        "primary-container": "#00f0ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-desktop": "48px",
+                        "margin-mobile": "16px",
+                        "container-max": "1280px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "code-sm": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "display": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "600"}],
+                        "code-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-panel {
+            position: relative;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(185, 202, 203, 0.1);
+            overflow: hidden;
+        }
+        .glass-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 219, 233, 0.08), transparent 40%);
+            z-index: 1;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            opacity: 0;
+        }
+        .glass-panel:hover::before {
+            opacity: 1;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(0, 219, 233, 0.4);
+        }
+        .scanner-line {
+            width: 100%;
+            height: 1px;
+            background: #00dbe9;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            animation: scan 3s linear infinite;
+            z-index: 2;
+        }
+        @keyframes scan {
+            0% { top: 0; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed antialiased">
+    <!-- TopNavBar -->
+    <header class="docked full-width top-0 sticky z-50 bg-background/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_0_15px_rgba(0,219,233,0.1)]">
+        <nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 max-w-container-max mx-auto">
+            <div class="font-display text-headline-lg-mobile md:text-headline-lg font-bold tracking-tighter text-primary-fixed">
+                IA DEVELOPER
+            </div>
+            <div class="hidden md:flex items-center gap-8">
+                <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="index.html">Home</a>
+                <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="services.html">Services</a>
+                <a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="index.html#portfolio">Portfolio</a>
+                <a class="text-primary-fixed font-bold border-b-2 border-primary-fixed pb-1" href="contact.html">Contact</a>
+            </div>
+            <div class="flex items-center gap-4">
+                <span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="terminal">terminal</span>
+                <a href="contact.html" class="hidden md:flex items-center gap-2 px-6 py-2 bg-primary-fixed-dim text-on-primary-fixed font-bold rounded-lg hover:shadow-[0_0_15px_rgba(0,219,233,0.4)] transition-all active:scale-95 text-center">
+                    Hire Me
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden text-primary">
+                    <span class="material-symbols-outlined text-3xl">menu</span>
+                </button>
+            </div>
+        </nav>
+        
+        <!-- Mobile Navigation Dropdown Menu -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-[73px] bg-background/95 backdrop-blur-xl border-b border-outline-variant/30 py-6 px-margin-mobile flex flex-col gap-6 z-40 transition-all duration-300">
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="index.html">Home</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="services.html">Services</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="index.html#portfolio">Portfolio</a>
+            <a class="font-display text-body-md text-primary-fixed font-bold" href="contact.html">Contact</a>
+            <a class="bg-primary-fixed text-on-primary-fixed py-3 text-center font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#00dbe9]" href="contact.html">Hire Me</a>
+        </div>
+    </header>
+
+    <main class="min-h-screen py-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+            <!-- Content Left: Context & Details -->
+            <div class="lg:col-span-5 space-y-12">
+                <section>
+                    <div class="flex items-center gap-2 mb-4">
+                        <span class="w-8 h-[1px] bg-primary-fixed-dim"></span>
+                        <span class="font-code-sm text-code-sm text-primary-fixed-dim uppercase tracking-widest">Initialization</span>
+                    </div>
+                    <h1 class="font-display text-display mb-6 leading-tight">Ready to start your next project?</h1>
+                    <p class="text-on-surface-variant text-lg max-w-md leading-relaxed">
+                        Architecture-first engineering for high-performance AI integration. Let's discuss your technical requirements and build something revolutionary.
+                    </p>
+                </section>
+                
+                <div class="space-y-6">
+                    <h2 class="font-code-sm text-label-caps text-outline uppercase">System Access Points</h2>
+                    <div class="grid grid-cols-1 gap-4">
+                        <a class="glass-panel p-6 group transition-all duration-300 hover:border-primary-fixed-dim" href="mailto:contact@iadeveloper.tech">
+                            <div class="flex items-center justify-between relative z-10">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center text-primary-fixed-dim">
+                                        <span class="material-symbols-outlined">mail</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-code-sm text-label-caps text-outline uppercase mb-1">Electronic Mail</p>
+                                        <p class="font-display font-semibold">contact@iadeveloper.tech</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim group-hover:translate-x-1 transition-all">arrow_forward</span>
+                            </div>
+                        </a>
+                        <a class="glass-panel p-6 group transition-all duration-300 hover:border-primary-fixed-dim" href="#">
+                            <div class="flex items-center justify-between relative z-10">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center text-primary-fixed-dim">
+                                        <span class="material-symbols-outlined">link</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-code-sm text-label-caps text-outline uppercase mb-1">Professional Network</p>
+                                        <p class="font-display font-semibold">linkedin.com/in/iadeveloper</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim group-hover:translate-x-1 transition-all">arrow_forward</span>
+                            </div>
+                        </a>
+                        <a class="glass-panel p-6 group transition-all duration-300 hover:border-primary-fixed-dim" href="https://github.com/Onehostingeurope/developIA.git" target="_blank">
+                            <div class="flex items-center justify-between relative z-10">
+                                <div class="flex items-center gap-4">
+                                    <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center text-primary-fixed-dim">
+                                        <span class="material-symbols-outlined">code</span>
+                                    </div>
+                                    <div>
+                                        <p class="font-code-sm text-label-caps text-outline uppercase mb-1">Source Repository</p>
+                                        <p class="font-display font-semibold">github.com/Onehostingeurope/developIA</p>
+                                    </div>
+                                </div>
+                                <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim group-hover:translate-x-1 transition-all">arrow_forward</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="relative w-full aspect-video rounded overflow-hidden glass-panel">
+                    <img class="w-full h-full object-cover opacity-60 relative z-0" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBKxYucgPSN566JVnqi3e4ZnBvlkb2USd9dRrCpZ5hClrLZnqx1oSzJW_GgnmYNGOro_xI7O4b-2Vcu-8d_ztc5I78xH7nNj1_tp6lIOoAWQ7GiWKGv2Op9cd5o_12BGGKkjWsHqPuwIiWJofswxxu_T-6YUPk0mcAJu1fmm7eJRmbWb23FyRkvqIYS3aSth8c3ilcwRXm87RG38t3MywGwiz0fygIFGLkxhoOmWHuJKhNQi3IK0HnIzcJM1hH0GFpJnaiCcfpjPg"/>
+                    <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent z-10"></div>
+                    <div class="absolute bottom-4 left-4 z-20">
+                        <p class="font-code-sm text-xs text-primary-fixed-dim bg-background/80 px-2 py-1 inline-block">SYSTEM_LOCATION: REMOTE_HYBRID</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Content Right: Form -->
+            <div class="lg:col-span-7 relative">
+                <div class="glass-panel p-8 md:p-12 relative overflow-hidden">
+                    <div class="scanner-line"></div>
+                    <div class="mb-10 relative z-10">
+                        <h3 class="font-display text-headline-lg text-primary mb-2">New Inquiry</h3>
+                        <p class="font-code-sm text-outline tracking-wider">SECURE TRANSMISSION PROTOCOL ACTIVATED</p>
+                    </div>
+                    
+                    <form id="secure-contact-form" action="#" class="space-y-8 relative z-10">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div class="group">
+                                <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Client_Name</label>
+                                <input id="client-name" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none" placeholder="e.g. Satoshi Nakamoto" type="text"/>
+                            </div>
+                            <div class="group">
+                                <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Client_Email</label>
+                                <input id="client-email" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none" placeholder="name@domain.tech" type="email"/>
+                            </div>
+                        </div>
+                        
+                        <div class="group">
+                            <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Project_Classification</label>
+                            <div class="relative">
+                                <select id="project-class" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface font-code-sm transition-all outline-none appearance-none">
+                                    <option disabled="" selected="" value="">Select Architecture Type</option>
+                                    <option value="ai_integration">AI / Machine Learning Integration</option>
+                                    <option value="full_stack">Full-Stack Ecosystem Development</option>
+                                    <option value="cloud_infrastructure">Enterprise Cloud Infrastructure</option>
+                                    <option value="consulting">Technical Strategy &amp; Architecture</option>
+                                </select>
+                                <span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-outline">expand_more</span>
+                            </div>
+                        </div>
+                        
+                        <div class="group">
+                            <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Mission_Parameters</label>
+                            <textarea id="mission-params" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none resize-none" placeholder="Define the scope, objectives, and technical constraints of your project..." rows="5"></textarea>
+                        </div>
+                        
+                        <div class="flex flex-col md:flex-row items-center gap-6 pt-4">
+                            <button class="w-full md:w-auto px-10 py-4 bg-primary-fixed text-on-primary-fixed font-bold flex items-center justify-center gap-3 hover:shadow-[0_0_20px_rgba(0,219,233,0.5)] transition-all group active:scale-95" type="submit">
+                                TRANSMIT MESSAGE
+                                <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+                            </button>
+                            <p class="font-code-sm text-xs text-outline leading-tight">
+                                By transmitting, you acknowledge that your data will be processed via secure channels for project evaluation only.
+                            </p>
+                        </div>
+                    </form>
+                    
+                    <!-- Simulated Success Screen -->
+                    <div id="success-screen" class="hidden absolute inset-0 bg-background/95 backdrop-blur-xl flex flex-col items-center justify-center text-center p-8 z-30">
+                        <span class="material-symbols-outlined text-[80px] text-primary-fixed-dim animate-pulse mb-6">verified_user</span>
+                        <h3 class="font-display text-3xl font-bold text-primary mb-4">Transmission Successful</h3>
+                        <p class="font-code-sm text-on-surface-variant max-w-md mb-8">
+                            Your project parameters have been uploaded via secure handshake. Our agentic team will initialize matching evaluation modules.
+                        </p>
+                        <button id="success-reset-btn" class="border border-primary-fixed text-primary-fixed px-8 py-3 font-display font-bold hover:bg-primary-fixed/10 transition-all">
+                            INITIALIZE NEW HANDSHAKE
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Floating Bits decorative -->
+                <div class="absolute -top-6 -right-6 w-24 h-24 border-t-2 border-r-2 border-primary-fixed-dim/20 pointer-events-none hidden md:block"></div>
+                <div class="absolute -bottom-6 -left-6 w-24 h-24 border-b-2 border-l-2 border-primary-fixed-dim/20 pointer-events-none hidden md:block"></div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full bg-surface-container-lowest border-t border-outline-variant relative z-10">
+        <div class="w-full px-margin-mobile md:px-margin-desktop py-12 flex flex-col md:flex-row justify-between items-center gap-base max-w-container-max mx-auto">
+            <div class="flex flex-col items-center md:items-start gap-4">
+                <div class="font-display text-headline-lg-mobile text-on-surface font-bold tracking-tighter">IA DEVELOPER</div>
+                <p class="font-code-sm text-code-sm text-outline uppercase tracking-widest text-center md:text-left">
+                    © 2026 IA DEVELOPER. ENGINEERED FOR INNOVATION.
+                </p>
+            </div>
+            <div class="flex flex-wrap justify-center gap-6 md:gap-8 mt-8 md:mt-0">
+                <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="services.html">Services</a>
+                <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="index.html#portfolio">Work</a>
+                <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#">Privacy</a>
+                <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="https://github.com/Onehostingeurope/developIA.git" target="_blank">GitHub</a>
+                <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#">LinkedIn</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Global Javascript Link -->
+    <script src="main.js"></script>
+</body>
+</html>

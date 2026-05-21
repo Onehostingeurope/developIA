@@ -1,0 +1,19 @@
+# Systems Configuration & Environments
+.env
+.env.local
+.env.*.local
+*.log
+
+# IDE & Editor specific settings
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.swp
+
+# OS Caches & System Files
+.DS_Store
+Thumbs.db
+desktop.ini
