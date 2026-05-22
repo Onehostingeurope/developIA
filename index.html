@@ -52,25 +52,65 @@
                 <img src="/logo.png" alt="DEVELOPIA Logo" class="h-12 md:h-16 w-auto object-contain" />
             </a>
             <div class="hidden md:flex items-center gap-8">
-                <a class="font-display text-body-md text-primary-fixed font-bold border-b-2 border-primary-fixed pb-1" href="/">Home</a>
-                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/services/">Services</a>
-                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#portfolio">Portfolio</a>
-                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/contact/">Contact</a>
+                <a class="font-display text-body-md text-primary-fixed font-bold border-b-2 border-primary-fixed pb-1" href="/" data-i18n="nav.home">Home</a>
+                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/services/" data-i18n="nav.services">Services</a>
+                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#portfolio" data-i18n="nav.portfolio">Portfolio</a>
+                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/contact/" data-i18n="nav.contact">Contact</a>
             </div>
             <div class="flex items-center gap-4">
                 <span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="terminal">terminal</span>
-                <a href="/contact/" class="hidden md:block bg-primary-fixed text-on-primary-fixed px-6 py-2 font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#0055ff] transition-all duration-300 text-center">Hire Me</a>
+                
+                <!-- Desktop Custom Glassmorphism Language Selector Dropdown -->
+                <div class="relative hidden md:block">
+                    <button id="lang-btn" class="flex items-center gap-1.5 px-3 py-1.5 border border-primary-fixed/40 bg-primary-fixed/5 backdrop-blur-sm hover:border-primary-fixed/80 hover:bg-primary-fixed/10 hover:shadow-[0_0_10px_rgba(0,85,255,0.2)] transition-all duration-300 rounded-sm select-none">
+                        <span class="material-symbols-outlined text-sm text-primary-fixed">language</span>
+                        <span id="active-lang-label" class="font-code-sm text-label-caps text-xs text-primary-fixed tracking-widest">EN</span>
+                        <span class="material-symbols-outlined text-sm text-primary-fixed transition-transform duration-200" id="lang-caret">expand_more</span>
+                    </button>
+                    <div id="lang-dropdown" class="hidden absolute right-0 top-full mt-2 w-44 bg-background/95 backdrop-blur-xl border border-outline-variant/50 shadow-[0_8px_32px_rgba(0,85,255,0.15)] z-[100] overflow-hidden">
+                        <button data-lang="en" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇬🇧</span> EN — English
+                        </button>
+                        <button data-lang="fr" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇫🇷</span> FR — Français
+                        </button>
+                        <button data-lang="es" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇪🇸</span> ES — Español
+                        </button>
+                        <button data-lang="it" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇮🇹</span> IT — Italiano
+                        </button>
+                        <button data-lang="ru" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇷🇺</span> RU — Русский
+                        </button>
+                    </div>
+                </div>
+
+                <a href="/contact/" class="hidden md:block bg-primary-fixed text-on-primary-fixed px-6 py-2 font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#0055ff] transition-all duration-300 text-center" data-i18n="nav.hire_me">Hire Me</a>
                 <button id="mobile-menu-btn" class="md:hidden material-symbols-outlined text-on-surface text-3xl">menu</button>
             </div>
         </nav>
         
         <!-- Mobile Navigation Dropdown Menu -->
         <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-[73px] bg-background/95 backdrop-blur-xl border-b border-outline-variant/30 py-6 px-margin-mobile flex flex-col gap-6 z-40 transition-all duration-300">
-            <a class="font-display text-body-md text-primary-fixed font-bold" href="/">Home</a>
-            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/services/">Services</a>
-            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="#portfolio">Portfolio</a>
-            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/contact/">Contact</a>
-            <a class="bg-primary-fixed text-on-primary-fixed py-3 text-center font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#0055ff]" href="/contact/">Hire Me</a>
+            <a class="font-display text-body-md text-primary-fixed font-bold" href="/" data-i18n="nav.home">Home</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/services/" data-i18n="nav.services">Services</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="#portfolio" data-i18n="nav.portfolio">Portfolio</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/contact/" data-i18n="nav.contact">Contact</a>
+            
+            <!-- Mobile Language Selector Row -->
+            <div class="flex flex-col gap-2 border-t border-outline-variant/30 pt-4">
+                <span class="font-code-sm text-label-caps text-outline uppercase tracking-wider mb-2">Language</span>
+                <div class="flex flex-wrap gap-2">
+                    <button data-lang="en" class="px-3 py-1.5 border border-outline-variant/30 rounded font-code-sm text-code-sm text-on-surface-variant hover:text-primary active:scale-95 transition-all">EN</button>
+                    <button data-lang="fr" class="px-3 py-1.5 border border-outline-variant/30 rounded font-code-sm text-code-sm text-on-surface-variant hover:text-primary active:scale-95 transition-all">FR</button>
+                    <button data-lang="es" class="px-3 py-1.5 border border-outline-variant/30 rounded font-code-sm text-code-sm text-on-surface-variant hover:text-primary active:scale-95 transition-all">ES</button>
+                    <button data-lang="it" class="px-3 py-1.5 border border-outline-variant/30 rounded font-code-sm text-code-sm text-on-surface-variant hover:text-primary active:scale-95 transition-all">IT</button>
+                    <button data-lang="ru" class="px-3 py-1.5 border border-outline-variant/30 rounded font-code-sm text-code-sm text-on-surface-variant hover:text-primary active:scale-95 transition-all">RU</button>
+                </div>
+            </div>
+
+            <a class="bg-primary-fixed text-on-primary-fixed py-3 text-center font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#0055ff]" href="/contact/" data-i18n="nav.hire_me">Hire Me</a>
         </div>
     </header>
 
@@ -86,21 +126,21 @@
             <div class="relative z-10 max-w-4xl mx-auto">
                 <div class="inline-flex items-center gap-base px-4 py-1.5 glass-card rounded mb-8 border-primary-fixed/20">
                     <span class="w-2 h-2 bg-primary-fixed animate-pulse"></span>
-                    <span class="font-code-sm text-code-sm text-primary uppercase tracking-[0.2em]">Systems Online &amp; Optimizing</span>
+                    <span class="font-code-sm text-code-sm text-primary uppercase tracking-[0.2em]" data-i18n="index.status">Systems Online &amp; Optimizing</span>
                 </div>
-                <h1 class="font-display text-display md:text-[84px] leading-tight mb-8 tracking-tighter">
+                <h1 class="font-display text-display md:text-[84px] leading-tight mb-8 tracking-tighter" data-i18n="index.hero_title">
                     Engineering the Future of <br/>
                     <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-fixed to-primary-container">Web &amp; AI</span>
                 </h1>
-                <p class="font-display text-body-md md:text-[20px] text-on-surface-variant max-w-2xl mx-auto mb-12 leading-relaxed">
+                <p class="font-display text-body-md md:text-[20px] text-on-surface-variant max-w-2xl mx-auto mb-12 leading-relaxed" data-i18n="index.hero_desc">
                     Custom web solutions and intelligent AI integrations tailored for your business. We build the architecture for tomorrow's digital economy.
                 </p>
                 <div class="flex flex-col md:flex-row items-center justify-center gap-gutter">
                     <a class="group relative px-10 py-4 bg-primary-fixed text-on-primary-fixed font-display font-bold text-body-md hover-glow-cyan transition-all duration-300 overflow-hidden" href="/services/">
-                        <span class="relative z-10">View Services</span>
+                        <span class="relative z-10" data-i18n="index.view_services">View Services</span>
                         <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
                     </a>
-                    <a class="px-10 py-4 border border-primary-fixed/50 text-primary-fixed font-display font-bold text-body-md hover:bg-primary-fixed/5 transition-all duration-300" href="/contact/">
+                    <a class="px-10 py-4 border border-primary-fixed/50 text-primary-fixed font-display font-bold text-body-md hover:bg-primary-fixed/5 transition-all duration-300" href="/contact/" data-i18n="index.get_in_touch">
                         Get in Touch
                     </a>
                 </div>
@@ -117,10 +157,10 @@
         <section class="py-24 px-margin-mobile max-w-container-max mx-auto relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-end gap-gutter mb-16">
                 <div>
-                    <h2 class="font-display text-headline-lg-mobile md:text-headline-lg text-primary mb-4">The Tech Stack</h2>
-                    <p class="font-display text-body-md text-on-surface-variant max-w-xl">Harnessing the most robust and innovative technologies to build scalable, high-performance applications.</p>
+                    <h2 class="font-display text-headline-lg-mobile md:text-headline-lg text-primary mb-4" data-i18n="index.tech_title">The Tech Stack</h2>
+                    <p class="font-display text-body-md text-on-surface-variant max-w-xl" data-i18n="index.tech_desc">Harnessing the most robust and innovative technologies to build scalable, high-performance applications.</p>
                 </div>
-                <div class="font-code-sm text-code-sm text-outline-variant uppercase tracking-widest pb-2">
+                <div class="font-code-sm text-code-sm text-outline-variant uppercase tracking-widest pb-2" data-i18n="index.tech_update">
                     LATEST_UPDATE: 2026.05
                 </div>
             </div>
@@ -132,8 +172,8 @@
                         <span class="material-symbols-outlined" data-icon="layers">layers</span>
                     </div>
                     <h3 class="font-display text-headline-lg-mobile text-on-surface mb-2 relative z-10">React / Next.js</h3>
-                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10">Modern frontend architecture for seamless user experiences and SEO performance.</p>
-                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10">Status: Optimized</div>
+                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10" data-i18n="index.tech_card1_desc">Modern frontend architecture for seamless user experiences and SEO performance.</p>
+                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10" data-i18n="index.tech_optimized">Status: Optimized</div>
                 </div>
                 <!-- Tech Card 2 -->
                 <div class="glass-card p-8 group hover:border-primary-fixed/50 transition-colors duration-500">
@@ -141,8 +181,8 @@
                         <span class="material-symbols-outlined" data-icon="neurology">psychology</span>
                     </div>
                     <h3 class="font-display text-headline-lg-mobile text-on-surface mb-2 relative z-10">OpenAI</h3>
-                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10">Integrating advanced LLMs for intelligent agents, RAG, and automated reasoning.</p>
-                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10">Status: Integrated</div>
+                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10" data-i18n="index.tech_card2_desc">Integrating advanced LLMs for intelligent agents, RAG, and automated reasoning.</p>
+                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10" data-i18n="index.tech_integrated">Status: Integrated</div>
                 </div>
                 <!-- Tech Card 3 -->
                 <div class="glass-card p-8 group hover:border-primary-fixed/50 transition-colors duration-500">
@@ -150,17 +190,17 @@
                         <span class="material-symbols-outlined" data-icon="memory">memory</span>
                     </div>
                     <h3 class="font-display text-headline-lg-mobile text-on-surface mb-2 relative z-10">TensorFlow</h3>
-                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10">Custom machine learning models for predictive analytics and data recognition.</p>
-                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10">Status: Computational</div>
+                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10" data-i18n="index.tech_card3_desc">Custom machine learning models for predictive analytics and data recognition.</p>
+                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10" data-i18n="index.tech_computational">Status: Computational</div>
                 </div>
                 <!-- Tech Card 4 -->
                 <div class="glass-card p-8 group hover:border-primary-fixed/50 transition-colors duration-500">
                     <div class="w-12 h-12 mb-6 flex items-center justify-center glass-card border-primary-fixed/20 text-primary-fixed group-hover:glow-cyan z-10 relative">
                         <span class="material-symbols-outlined" data-icon="database">database</span>
                     </div>
-                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-2 relative z-10">Modern Backend</h3>
-                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10">PostgreSQL and Vector DBs ensuring data integrity and ultra-fast retrieval.</p>
-                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10">Status: Scalable</div>
+                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-2 relative z-10" data-i18n="translations.en.index.tech_card4_title">Modern Backend</h3>
+                    <p class="font-display text-body-md text-on-surface-variant mb-6 relative z-10" data-i18n="index.tech_card4_desc">PostgreSQL and Vector DBs ensuring data integrity and ultra-fast retrieval.</p>
+                    <div class="font-code-sm text-code-sm text-primary-fixed opacity-60 relative z-10" data-i18n="index.tech_scalable">Status: Scalable</div>
                 </div>
             </div>
         </section>
@@ -169,7 +209,7 @@
         <section id="portfolio" class="py-24 bg-surface-container-low/30 relative z-10">
             <div class="max-w-container-max mx-auto px-margin-mobile">
                 <div class="mb-16">
-                    <h2 class="font-display text-headline-lg md:text-display text-on-surface mb-4">Selected Work</h2>
+                    <h2 class="font-display text-headline-lg md:text-display text-on-surface mb-4" data-i18n="index.selected_work">Selected Work</h2>
                     <div class="h-1 w-24 bg-primary-fixed"></div>
                 </div>
                 
@@ -177,10 +217,10 @@
                     <a href="https://www.easydubbing.uk/" target="_blank" rel="noopener" class="md:col-span-8 glass-card relative group overflow-hidden h-[400px] md:h-full block cursor-pointer">
                         <img alt="Easy Dubbing Platform" class="absolute inset-0 w-full h-full object-contain opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 relative z-0" src="easydubbing.jpg"/>
                         <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-background/90 via-background/40 to-transparent z-10">
-                            <span class="font-label-caps text-label-caps text-primary-fixed mb-2 block">AI VIDEO LOCALIZATION &amp; DUBBING</span>
-                            <h3 class="font-display text-headline-lg text-on-surface mb-2">Easy Dubbing</h3>
+                            <span class="font-label-caps text-label-caps text-primary-fixed mb-2 block" data-i18n="index.work_dubbing_caps">AI VIDEO LOCALIZATION &amp; DUBBING</span>
+                            <h3 class="font-display text-headline-lg text-on-surface mb-2" data-i18n="index.work_dubbing_title">Easy Dubbing</h3>
                             <div class="inline-flex items-center gap-2 font-code-sm text-primary-fixed group-hover:translate-x-2 transition-transform">
-                                VISIT PLATFORM <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
+                                <span data-i18n="index.work_dubbing_visit">VISIT PLATFORM</span> <span class="material-symbols-outlined text-[18px]" data-icon="arrow_forward">arrow_forward</span>
                             </div>
                         </div>
                     </a>
@@ -189,15 +229,15 @@
                         <a href="https://tunemusics.com/" target="_blank" rel="noopener" class="h-1/2 glass-card relative group overflow-hidden block cursor-pointer">
                             <img alt="TuneMusics Platform" class="absolute inset-0 w-full h-full object-contain opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 relative z-0" src="tunemusics.png"/>
                             <div class="absolute inset-0 p-8 flex flex-col justify-end z-10 bg-gradient-to-t from-background/90 via-background/20 to-transparent">
-                                <span class="font-label-caps text-label-caps text-primary-fixed mb-1 block">MUSIC PLATFORM</span>
-                                <h3 class="font-display text-headline-lg-mobile text-on-surface">TuneMusics</h3>
+                                <span class="font-label-caps text-label-caps text-primary-fixed mb-1 block" data-i18n="index.work_tunes_caps">MUSIC PLATFORM</span>
+                                <h3 class="font-display text-headline-lg-mobile text-on-surface" data-i18n="index.work_tunes_title">TuneMusics</h3>
                             </div>
                         </a>
                         <a href="https://www.socialaipublisher.com/" target="_blank" rel="noopener" class="h-1/2 glass-card relative group overflow-hidden block cursor-pointer">
                             <img alt="Social AI Publisher Platform" class="absolute inset-0 w-full h-full object-contain opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 relative z-0" src="social_ai_publisher.png"/>
                             <div class="absolute inset-0 p-8 flex flex-col justify-end z-10 bg-gradient-to-t from-background/90 via-background/20 to-transparent">
-                                <span class="font-label-caps text-label-caps text-primary-fixed mb-1 block">AI CONTENT &amp; PUBLISHING</span>
-                                <h3 class="font-display text-headline-lg-mobile text-on-surface">Social AI Publisher</h3>
+                                <span class="font-label-caps text-label-caps text-primary-fixed mb-1 block" data-i18n="index.work_social_caps">AI CONTENT &amp; PUBLISHING</span>
+                                <h3 class="font-display text-headline-lg-mobile text-on-surface" data-i18n="index.work_social_title">Social AI Publisher</h3>
                             </div>
                         </a>
                     </div>
@@ -209,11 +249,11 @@
         <section class="py-32 px-margin-mobile relative overflow-hidden z-10">
             <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-primary-fixed/50 to-transparent"></div>
             <div class="max-w-3xl mx-auto text-center relative z-10">
-                <h2 class="font-display text-display md:text-[56px] text-primary mb-8 leading-tight">Ready to build the next breakthrough?</h2>
-                <p class="font-display text-body-md text-on-surface-variant mb-12">Whether you're looking for a bespoke AI integration or a world-class web application, we're here to engineer your success.</p>
+                <h2 class="font-display text-display md:text-[56px] text-primary mb-8 leading-tight" data-i18n="index.cta_title">Ready to build the next breakthrough?</h2>
+                <p class="font-display text-body-md text-on-surface-variant mb-12" data-i18n="index.cta_desc">Whether you're looking for a bespoke AI integration or a world-class web application, we're here to engineer your success.</p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-gutter">
-                    <a class="w-full sm:w-auto px-12 py-4 bg-primary-fixed text-on-primary-fixed font-display font-bold text-body-md hover-glow-cyan transition-all text-center" href="/contact/">Start Project</a>
-                    <a class="w-full sm:w-auto px-12 py-4 border border-outline text-on-surface font-display font-bold text-body-md hover:bg-surface-container transition-all text-center" href="/contact/">Consultation</a>
+                    <a class="w-full sm:w-auto px-12 py-4 bg-primary-fixed text-on-primary-fixed font-display font-bold text-body-md hover-glow-cyan transition-all text-center" href="/contact/" data-i18n="index.cta_start">Start Project</a>
+                    <a class="w-full sm:w-auto px-12 py-4 border border-outline text-on-surface font-display font-bold text-body-md hover:bg-surface-container transition-all text-center" href="/contact/" data-i18n="index.cta_consultation">Consultation</a>
                 </div>
             </div>
         </section>
@@ -230,13 +270,13 @@
             </div>
             <!-- Bottom Row: Copyright & Links -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-outline-variant/10 pt-6">
-                <p class="font-code-sm text-code-sm text-outline uppercase tracking-widest text-center md:text-left">
+                <p class="font-code-sm text-code-sm text-outline uppercase tracking-widest text-center md:text-left" data-i18n="footer.copyright">
                     © 2026 DEVELOPIA. ENGINEERED FOR INNOVATION.
                 </p>
                 <div class="flex flex-wrap justify-center gap-6 md:gap-8">
-                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all duration-300" href="/services/">Services</a>
-                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all duration-300" href="#">Privacy</a>
-                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all duration-300" href="#">Terms</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all duration-300" href="/services/" data-i18n="footer.services">Services</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all duration-300" href="#" data-i18n="footer.privacy">Privacy</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all duration-300" href="#" data-i18n="footer.terms">Terms</a>
                 </div>
             </div>
         </div>
@@ -246,3 +286,4 @@
     <script type="module" src="/main.ts"></script>
 </body>
 </html>
+

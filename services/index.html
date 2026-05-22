@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Develop IA - Services | Architectural Web & AI Capabilities</title>
+    <title>Developia - Services | Architectural Web &amp; AI Capabilities</title>
     <meta name="description" content="Explore our technical services: high-performance web development, custom LLM fine-tuning, automated AI integrations, and predictive analytics systems." />
     
     <!-- SEO and Open Graph Meta Tags -->
@@ -12,15 +12,15 @@
     
     <!-- Open Graph Metadata -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Develop IA - Services | Architectural Web & AI Capabilities" />
+    <meta property="og:title" content="Developia - Services | Architectural Web &amp; AI Capabilities" />
     <meta property="og:description" content="Explore our technical services: high-performance web development, custom LLM fine-tuning, automated AI integrations, and predictive analytics systems." />
     <meta property="og:url" content="https://developia.org/services/" />
     <meta property="og:image" content="https://lh3.googleusercontent.com/aida-public/AB6AXuDlFbPpXL1pnRZA8aJgiKs8clPXvK472NkesPvShkK0GZnUNSDUbSaqpnc0TmNRhPS2RmAHZ_e_dmFoiFf-c2ksGPwDohFuSjYuQJ6EgzMZIwASXLc12eFa2Nmdp-Ah5l7FHrH78VGPmdAG2o6VGMVu8U1jf6V4RWYoHyTdMJ8MCWzrXV-_A8cJAU--SgE4FE5XBKrBU76YsXl8jHj_Gibt_dB1Nv55Ot2JCKH46FJT39QZ5eysPPE5jWdWNP4oUp3K0aVXiWNJug" />
-    <meta property="og:site_name" content="Develop IA" />
+    <meta property="og:site_name" content="Developia" />
     
     <!-- Twitter Metadata -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Develop IA - Services | Architectural Web & AI Capabilities" />
+    <meta name="twitter:title" content="Developia - Services | Architectural Web &amp; AI Capabilities" />
     <meta name="twitter:description" content="Explore our technical services: high-performance web development, custom LLM fine-tuning, automated AI integrations, and predictive analytics systems." />
     <meta name="twitter:image" content="https://lh3.googleusercontent.com/aida-public/AB6AXuDlFbPpXL1pnRZA8aJgiKs8clPXvK472NkesPvShkK0GZnUNSDUbSaqpnc0TmNRhPS2RmAHZ_e_dmFoiFf-c2ksGPwDohFuSjYuQJ6EgzMZIwASXLc12eFa2Nmdp-Ah5l7FHrH78VGPmdAG2o6VGMVu8U1jf6V4RWYoHyTdMJ8MCWzrXV-_A8cJAU--SgE4FE5XBKrBU76YsXl8jHj_Gibt_dB1Nv55Ot2JCKH46FJT39QZ5eysPPE5jWdWNP4oUp3K0aVXiWNJug" />
 
@@ -32,7 +32,7 @@
       "serviceType": "Web & AI engineering solutions",
       "provider": {
         "@type": "Organization",
-        "name": "Develop IA",
+        "name": "Developia",
         "url": "https://developia.org"
       },
       "areaServed": "Worldwide",
@@ -79,14 +79,39 @@
                 <img src="/logo.png" alt="DEVELOPIA Logo" class="h-12 md:h-16 w-auto object-contain" />
             </a>
             <div class="hidden md:flex items-center gap-8">
-                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/">Home</a>
-                <a class="font-display text-body-md text-primary-fixed font-bold border-b-2 border-primary-fixed pb-1" href="/services/">Services</a>
-                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/#portfolio">Portfolio</a>
-                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/contact/">Contact</a>
+                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/" data-i18n="nav.home">Home</a>
+                <a class="font-display text-body-md text-primary-fixed font-bold border-b-2 border-primary-fixed pb-1" href="/services/" data-i18n="nav.services">Services</a>
+                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/#portfolio" data-i18n="nav.portfolio">Portfolio</a>
+                <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="/contact/" data-i18n="nav.contact">Contact</a>
             </div>
             <div class="flex items-center gap-4">
+                <!-- Language Selector (Desktop) -->
+                <div class="relative hidden md:block">
+                    <button id="lang-btn" class="flex items-center gap-1.5 px-3 py-1.5 border border-outline-variant/50 bg-surface-container/80 backdrop-blur-sm hover:border-primary-fixed/50 hover:bg-primary-fixed/5 transition-all duration-300 rounded-sm text-on-surface-variant hover:text-primary-fixed group">
+                        <span class="material-symbols-outlined text-sm text-primary-fixed">language</span>
+                        <span id="active-lang-label" class="font-code-sm text-label-caps text-xs tracking-widest">EN</span>
+                        <span id="lang-caret" class="material-symbols-outlined text-sm transition-transform duration-200">expand_more</span>
+                    </button>
+                    <div id="lang-dropdown" class="hidden absolute right-0 top-full mt-2 w-40 bg-background/95 backdrop-blur-xl border border-outline-variant/50 shadow-[0_8px_32px_rgba(0,85,255,0.15)] z-[100] overflow-hidden">
+                        <button data-lang="en" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇬🇧</span> EN — English
+                        </button>
+                        <button data-lang="fr" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇫🇷</span> FR — Français
+                        </button>
+                        <button data-lang="es" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇪🇸</span> ES — Español
+                        </button>
+                        <button data-lang="it" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇮🇹</span> IT — Italiano
+                        </button>
+                        <button data-lang="ru" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
+                            <span class="text-base">🇷🇺</span> RU — Русский
+                        </button>
+                    </div>
+                </div>
                 <span class="material-symbols-outlined text-primary-fixed cursor-pointer" data-icon="terminal">terminal</span>
-                <a href="/contact/" class="bg-primary text-on-primary font-bold px-6 py-2 rounded-DEFAULT hover:shadow-[0_0_10px_#0055ff] transition-all duration-300 active:scale-95 text-center">
+                <a href="/contact/" class="bg-primary text-on-primary font-bold px-6 py-2 rounded-DEFAULT hover:shadow-[0_0_10px_#0055ff] transition-all duration-300 active:scale-95 text-center" data-i18n="nav.hire_me">
                     Hire Me
                 </a>
                 <button id="mobile-menu-btn" class="md:hidden material-symbols-outlined text-on-surface text-3xl">menu</button>
@@ -95,11 +120,19 @@
         
         <!-- Mobile Navigation Dropdown Menu -->
         <div id="mobile-menu" class="hidden md:hidden fixed inset-x-0 top-[73px] bg-background/95 backdrop-blur-xl border-b border-outline-variant/30 py-6 px-margin-mobile flex flex-col gap-6 z-40 transition-all duration-300">
-            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/">Home</a>
-            <a class="font-display text-body-md text-primary-fixed font-bold" href="/services/">Services</a>
-            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/#portfolio">Portfolio</a>
-            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/contact/">Contact</a>
-            <a class="bg-primary-fixed text-on-primary-fixed py-3 text-center font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#0055ff]" href="/contact/">Hire Me</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/" data-i18n="nav.home">Home</a>
+            <a class="font-display text-body-md text-primary-fixed font-bold" href="/services/" data-i18n="nav.services">Services</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/#portfolio" data-i18n="nav.portfolio">Portfolio</a>
+            <a class="font-display text-body-md text-on-surface-variant font-medium hover:text-primary transition-colors" href="/contact/" data-i18n="nav.contact">Contact</a>
+            <!-- Language Selector (Mobile) -->
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-outline-variant/20">
+                <button data-lang="en" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇬🇧 EN</button>
+                <button data-lang="fr" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇫🇷 FR</button>
+                <button data-lang="es" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇪🇸 ES</button>
+                <button data-lang="it" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇮🇹 IT</button>
+                <button data-lang="ru" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇷🇺 RU</button>
+            </div>
+            <a class="bg-primary-fixed text-on-primary-fixed py-3 text-center font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#0055ff]" href="/contact/" data-i18n="nav.hire_me">Hire Me</a>
         </div>
     </header>
 
@@ -110,10 +143,10 @@
             <div class="relative z-10">
                 <div class="inline-flex items-center gap-2 px-3 py-1 border border-primary-fixed/30 bg-primary-fixed/5 mb-6">
                     <span class="w-2 h-2 bg-primary-fixed animate-pulse rounded-full"></span>
-                    <span class="font-code-sm text-label-caps text-primary-fixed uppercase tracking-widest">Capabilities Shell v2.4</span>
+                    <span class="font-code-sm text-label-caps text-primary-fixed uppercase tracking-widest" data-i18n="services.caps_shell">Capabilities Shell v2.4</span>
                 </div>
-                <h1 class="font-display text-display mb-6 max-w-4xl">Engineering the <span class="text-primary-fixed-dim">Future</span> of Intelligence.</h1>
-                <p class="text-on-surface-variant max-w-2xl text-lg font-display">
+                <h1 class="font-display text-display mb-6 max-w-4xl" data-i18n="services.hero_title">Engineering the <span class="text-primary-fixed-dim">Future</span> of Intelligence.</h1>
+                <p class="text-on-surface-variant max-w-2xl text-lg font-display" data-i18n="services.hero_desc">
                     Bridging the gap between architectural stability and cutting-edge AI innovation. We build high-performance digital ecosystems for technical founders.
                 </p>
             </div>
@@ -123,8 +156,8 @@
         <section id="web-dev" class="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div>
-                    <h2 class="font-display text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Web Development</h2>
-                    <p class="text-on-surface-variant font-code-sm text-code-sm uppercase tracking-widest">01 / ARCHITECTURE &amp; PERFORMANCE</p>
+                    <h2 class="font-display text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2" data-i18n="services.web_dev_title">Web Development</h2>
+                    <p class="text-on-surface-variant font-code-sm text-code-sm uppercase tracking-widest" data-i18n="services.web_dev_subtitle">01 / ARCHITECTURE &amp; PERFORMANCE</p>
                 </div>
                 <div class="h-[1px] flex-grow bg-outline-variant/30 mx-8 hidden md:block"></div>
             </div>
@@ -136,8 +169,8 @@
                     <div class="mb-8 relative z-10">
                         <span class="material-symbols-outlined text-4xl text-primary-fixed">web</span>
                     </div>
-                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10">Custom Applications</h3>
-                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10">
+                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10" data-i18n="services.custom_apps_title">Custom Applications</h3>
+                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10" data-i18n="services.custom_apps_desc">
                         Bespoke software solutions built with scalable architectures and enterprise-grade security protocols for complex business logic.
                     </p>
                     <div class="flex flex-wrap gap-2 relative z-10">
@@ -152,8 +185,8 @@
                     <div class="mb-8 relative z-10">
                         <span class="material-symbols-outlined text-4xl text-primary-fixed">speed</span>
                     </div>
-                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10">Performance Optimization</h3>
-                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10">
+                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10" data-i18n="services.perf_opt_title">Performance Optimization</h3>
+                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10" data-i18n="services.perf_opt_desc">
                         Eliminating bottlenecks through rigorous auditing, asset minification, and advanced caching strategies to achieve sub-second load times.
                     </p>
                     <div class="flex flex-wrap gap-2 relative z-10">
@@ -168,8 +201,8 @@
                     <div class="mb-8 relative z-10">
                         <span class="material-symbols-outlined text-4xl text-primary-fixed">devices</span>
                     </div>
-                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10">Responsive Design</h3>
-                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10">
+                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10" data-i18n="services.resp_design_title">Responsive Design</h3>
+                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10" data-i18n="services.resp_design_desc">
                         Fluid interfaces that maintain structural integrity across all viewports, from mobile devices to ultra-wide desktop monitors.
                     </p>
                     <div class="flex flex-wrap gap-2 relative z-10">
@@ -185,8 +218,8 @@
         <section id="ai-dev" class="py-16 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto mb-24 relative z-10">
             <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
                 <div>
-                    <h2 class="font-display text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2">Artificial Intelligence</h2>
-                    <p class="text-on-surface-variant font-code-sm text-code-sm uppercase tracking-widest">02 / NEURAL SYSTEMS &amp; INTEGRATION</p>
+                    <h2 class="font-display text-headline-lg-mobile md:text-headline-lg text-on-surface mb-2" data-i18n="services.ai_title">Artificial Intelligence</h2>
+                    <p class="text-on-surface-variant font-code-sm text-code-sm uppercase tracking-widest" data-i18n="services.ai_subtitle">02 / NEURAL SYSTEMS &amp; INTEGRATION</p>
                 </div>
                 <div class="h-[1px] flex-grow bg-outline-variant/30 mx-8 hidden md:block"></div>
             </div>
@@ -199,18 +232,18 @@
                         <div class="mb-8">
                             <span class="material-symbols-outlined text-4xl text-primary-fixed">psychology</span>
                         </div>
-                        <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4">AI Integration</h3>
-                        <p class="text-on-surface-variant mb-8 leading-relaxed">
+                        <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4" data-i18n="services.ai_integration_title">AI Integration</h3>
+                        <p class="text-on-surface-variant mb-8 leading-relaxed" data-i18n="services.ai_integration_desc">
                             Embedding machine learning models directly into existing workflows. We automate cognitive tasks, enhancing productivity through seamless API connectivity and custom agentic frameworks.
                         </p>
                         <ul class="space-y-4">
                             <li class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
-                                <span class="font-code-sm text-on-surface">Automated Data Pipelines</span>
+                                <span class="font-code-sm text-on-surface" data-i18n="services.ai_pipeline">Automated Data Pipelines</span>
                             </li>
                             <li class="flex items-center gap-3">
                                 <span class="material-symbols-outlined text-primary-fixed text-sm">check_circle</span>
-                                <span class="font-code-sm text-on-surface">Cognitive Search Engines</span>
+                                <span class="font-code-sm text-on-surface" data-i18n="services.ai_search">Cognitive Search Engines</span>
                             </li>
                         </ul>
                     </div>
@@ -225,13 +258,13 @@
                     <div class="mb-8 relative z-10">
                         <span class="material-symbols-outlined text-4xl text-primary-fixed">model_training</span>
                     </div>
-                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10">LLM Fine-tuning</h3>
-                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10">
+                    <h3 class="font-display text-headline-lg-mobile text-on-surface mb-4 relative z-10" data-i18n="services.llm_title">LLM Fine-tuning</h3>
+                    <p class="text-on-surface-variant mb-8 flex-grow relative z-10" data-i18n="services.llm_desc">
                         Adapting foundational Large Language Models to your proprietary datasets, ensuring specialized domain knowledge and brand-aligned tone.
                     </p>
                     <div class="pt-4 border-t border-outline-variant/20 relative z-10">
                         <div class="flex justify-between items-center mb-2">
-                            <span class="font-code-sm text-label-caps text-on-surface-variant">TRAINING PROGRESS</span>
+                            <span class="font-code-sm text-label-caps text-on-surface-variant" data-i18n="services.llm_progress">TRAINING PROGRESS</span>
                             <span class="font-code-sm text-label-caps text-primary-fixed">100%</span>
                         </div>
                         <div class="h-1 bg-surface-container-highest w-full overflow-hidden">
@@ -246,12 +279,12 @@
                         <span class="material-symbols-outlined text-5xl text-primary-fixed">insights</span>
                     </div>
                     <div class="flex-grow z-10 relative">
-                        <h3 class="font-display text-headline-lg-mobile text-on-surface mb-2">Predictive Analytics</h3>
-                        <p class="text-on-surface-variant leading-relaxed">
+                        <h3 class="font-display text-headline-lg-mobile text-on-surface mb-2" data-i18n="services.pred_title">Predictive Analytics</h3>
+                        <p class="text-on-surface-variant leading-relaxed" data-i18n="services.pred_desc">
                             Leveraging historical data to forecast future trends. We build custom dashboards that visualize complex probabilities into actionable business intelligence using advanced regression and classification models.
                         </p>
                     </div>
-                    <a href="/contact/" class="border border-primary-fixed text-primary-fixed px-8 py-3 font-display font-bold hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors whitespace-nowrap z-10 relative text-center">
+                    <a href="/contact/" class="border border-primary-fixed text-primary-fixed px-8 py-3 font-display font-bold hover:bg-primary-fixed hover:text-on-primary-fixed transition-colors whitespace-nowrap z-10 relative text-center" data-i18n="services.pred_explore">
                         EXPLORE MODELS
                     </a>
                 </div>
@@ -264,13 +297,13 @@
                 <div class="w-full h-full" style="background-image: radial-gradient(circle, #0055ff 1px, transparent 1px); background-size: 24px 24px;"></div>
             </div>
             <div class="max-w-container-max mx-auto text-center relative z-10">
-                <h2 class="font-display text-display mb-8">Ready to <span class="text-primary-fixed">Scale</span>?</h2>
-                <p class="text-on-surface-variant max-w-xl mx-auto mb-12 text-lg">
+                <h2 class="font-display text-display mb-8" data-i18n="services.cta_title">Ready to <span class="text-primary-fixed">Scale</span>?</h2>
+                <p class="text-on-surface-variant max-w-xl mx-auto mb-12 text-lg" data-i18n="services.cta_desc">
                     Schedule a technical consultation to audit your current stack and identify AI opportunities.
                 </p>
                 <div class="flex flex-col md:flex-row gap-4 justify-center">
-                    <a href="/contact/" class="bg-primary-fixed text-on-primary-fixed px-10 py-4 font-display font-bold text-lg hover:shadow-[0_0_20px_#0055ff] transition-all text-center">START PROJECT</a>
-                    <a href="/#portfolio" class="border border-outline text-on-surface px-10 py-4 font-display font-bold text-lg hover:bg-surface-container-highest transition-all text-center">VIEW CASE STUDIES</a>
+                    <a href="/contact/" class="bg-primary-fixed text-on-primary-fixed px-10 py-4 font-display font-bold text-lg hover:shadow-[0_0_20px_#0055ff] transition-all text-center" data-i18n="services.cta_start">START PROJECT</a>
+                    <a href="/#portfolio" class="border border-outline text-on-surface px-10 py-4 font-display font-bold text-lg hover:bg-surface-container-highest transition-all text-center" data-i18n="services.cta_case_studies">VIEW CASE STUDIES</a>
                 </div>
             </div>
         </section>
@@ -287,13 +320,13 @@
             </div>
             <!-- Bottom Row: Copyright & Links -->
             <div class="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-outline-variant/10 pt-6">
-                <p class="font-code-sm text-code-sm text-outline uppercase tracking-widest text-center md:text-left">
+                <p class="font-code-sm text-code-sm text-outline uppercase tracking-widest text-center md:text-left" data-i18n="footer.copyright">
                     © 2026 DEVELOPIA. ENGINEERED FOR INNOVATION.
                 </p>
                 <div class="flex flex-wrap justify-center gap-6 md:gap-8">
-                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="/services/">Services</a>
-                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#">Privacy</a>
-                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#">Terms</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="/services/" data-i18n="footer.services">Services</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#" data-i18n="footer.privacy">Privacy</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#" data-i18n="footer.terms">Terms</a>
                 </div>
             </div>
         </div>

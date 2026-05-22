@@ -1,9 +1,186 @@
+import { translations } from './i18n';
+
 /**
  * Develop IA Web Solutions - Core Interactive Engine
  * Premium tech-minimalist micro-interactions, responsive menus, and immersive visual effects.
  */
 
+// ==========================================
+// i18n Localization Engine
+// ==========================================
+class I18nEngine {
+    private currentLang: string = 'en';
+    private supportedLangs = ['en', 'fr', 'es', 'it', 'ru'];
+
+    constructor() {
+        this.init();
+    }
+
+    private init() {
+        const savedLang = localStorage.getItem('preferred_lang');
+        const browserLang = navigator.language.slice(0, 2).toLowerCase();
+        
+        if (savedLang && this.supportedLangs.includes(savedLang)) {
+            this.currentLang = savedLang;
+        } else if (this.supportedLangs.includes(browserLang)) {
+            this.currentLang = browserLang;
+        } else {
+            this.currentLang = 'en';
+        }
+        
+        // Initial application without transition animation to prevent layout flashes
+        this.applyTranslations(this.currentLang, false);
+        this.setupEventListeners();
+    }
+
+    private getTranslationValue(lang: string, path: string): string | undefined {
+        const keys = path.split('.');
+        let current: any = translations[lang];
+        for (const key of keys) {
+            if (current && typeof current === 'object') {
+                current = current[key];
+            } else {
+                return undefined;
+            }
+        }
+        return typeof current === 'string' ? current : undefined;
+    }
+
+    public applyTranslations(lang: string, animate: boolean = true) {
+        if (!this.supportedLangs.includes(lang)) return;
+        this.currentLang = lang;
+        localStorage.setItem('preferred_lang', lang);
+        document.documentElement.setAttribute('lang', lang);
+
+        const updateElements = () => {
+            // Translate standard elements
+            const translatable = document.querySelectorAll('[data-i18n]');
+            translatable.forEach(el => {
+                const path = el.getAttribute('data-i18n');
+                if (path) {
+                    const val = this.getTranslationValue(lang, path);
+                    if (val !== undefined) {
+                        // Use textContent for option elements to avoid XSS / broken select
+                        if (el.tagName === 'OPTION') {
+                            el.textContent = val;
+                        } else {
+                            el.innerHTML = val;
+                        }
+                    }
+                }
+            });
+
+            // Translate placeholders
+            const placeholders = document.querySelectorAll('[data-i18n-placeholder]');
+            placeholders.forEach(el => {
+                const path = el.getAttribute('data-i18n-placeholder');
+                if (path) {
+                    const val = this.getTranslationValue(lang, path);
+                    if (val !== undefined) {
+                        el.setAttribute('placeholder', val);
+                    }
+                }
+            });
+
+            // Update Desktop UI states
+            const activeLangLabel = document.getElementById('active-lang-label');
+            if (activeLangLabel) activeLangLabel.textContent = lang.toUpperCase();
+
+            // Highlight desktop dropdown item
+            const dropdownItems = document.querySelectorAll('#lang-dropdown button[data-lang]');
+            dropdownItems.forEach(btn => {
+                const btnLang = btn.getAttribute('data-lang');
+                if (btnLang === lang) {
+                    btn.classList.add('text-primary', 'bg-primary-fixed/10');
+                    btn.classList.remove('text-on-surface-variant');
+                } else {
+                    btn.classList.remove('text-primary', 'bg-primary-fixed/10');
+                    btn.classList.add('text-on-surface-variant');
+                }
+            });
+
+            // Highlight mobile buttons
+            const mobileLangButtons = document.querySelectorAll('#mobile-menu button[data-lang]');
+            mobileLangButtons.forEach(btn => {
+                const btnLang = btn.getAttribute('data-lang');
+                if (btnLang === lang) {
+                    btn.classList.add('text-primary', 'border-primary-fixed/60', 'bg-primary-fixed/15');
+                    btn.classList.remove('text-on-surface-variant');
+                } else {
+                    btn.classList.remove('text-primary', 'border-primary-fixed/60', 'bg-primary-fixed/15');
+                    btn.classList.add('text-on-surface-variant');
+                }
+            });
+        };
+
+        if (animate) {
+            // Smooth micro-animation opacity transition
+            document.body.classList.add('transition-opacity', 'duration-150', 'opacity-0');
+            setTimeout(() => {
+                updateElements();
+                setTimeout(() => {
+                    document.body.classList.remove('opacity-0');
+                }, 50);
+            }, 150);
+        } else {
+            updateElements();
+        }
+    }
+
+    private setupEventListeners() {
+        // Desktop drop-down toggle
+        const langBtn = document.getElementById('lang-btn');
+        const langDropdown = document.getElementById('lang-dropdown');
+        const langCaret = document.getElementById('lang-caret');
+
+        if (langBtn && langDropdown) {
+            langBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const isHidden = langDropdown.classList.contains('hidden');
+                if (isHidden) {
+                    langDropdown.classList.remove('hidden');
+                    if (langCaret) langCaret.style.transform = 'rotate(180deg)';
+                } else {
+                    langDropdown.classList.add('hidden');
+                    if (langCaret) langCaret.style.transform = 'rotate(0deg)';
+                }
+            });
+
+            // Close dropdown clicking outside
+            document.addEventListener('click', () => {
+                langDropdown.classList.add('hidden');
+                if (langCaret) langCaret.style.transform = 'rotate(0deg)';
+            });
+
+            // Selection clicks (Desktop)
+            const dropdownItems = document.querySelectorAll('#lang-dropdown button[data-lang]');
+            dropdownItems.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const targetLang = btn.getAttribute('data-lang');
+                    if (targetLang) {
+                        this.applyTranslations(targetLang, true);
+                    }
+                });
+            });
+        }
+
+        // Mobile selector clicks
+        const mobileLangButtons = document.querySelectorAll('#mobile-menu button[data-lang]');
+        mobileLangButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const targetLang = btn.getAttribute('data-lang');
+                if (targetLang) {
+                    this.applyTranslations(targetLang, true);
+                }
+            });
+        });
+    }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize localization engine
+    new I18nEngine();
+
     
     // ==========================================
     // 1. Responsive Navigation Menu
