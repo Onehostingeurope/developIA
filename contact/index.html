@@ -45,6 +45,7 @@
     <link rel="stylesheet" href="/style.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;family=Geist:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"/>
 </head>
 <body class="bg-background text-on-background font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed antialiased">
     <!-- TopNavBar -->
@@ -69,19 +70,19 @@
                     </button>
                     <div id="lang-dropdown" class="hidden absolute right-0 top-full mt-2 w-40 bg-background/95 backdrop-blur-xl border border-outline-variant/50 shadow-[0_8px_32px_rgba(0,85,255,0.15)] z-[100] overflow-hidden">
                         <button data-lang="en" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
-                            <span class="text-base">🇬🇧</span> EN — English
+                            <span class="fi fi-gb" style="border-radius:2px;width:1.2em;height:0.9em;"></span> EN — English
                         </button>
                         <button data-lang="fr" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
-                            <span class="text-base">🇫🇷</span> FR — Français
+                            <span class="fi fi-fr" style="border-radius:2px;width:1.2em;height:0.9em;"></span> FR — Français
                         </button>
                         <button data-lang="es" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
-                            <span class="text-base">🇪🇸</span> ES — Español
+                            <span class="fi fi-es" style="border-radius:2px;width:1.2em;height:0.9em;"></span> ES — Español
                         </button>
                         <button data-lang="it" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
-                            <span class="text-base">🇮🇹</span> IT — Italiano
+                            <span class="fi fi-it" style="border-radius:2px;width:1.2em;height:0.9em;"></span> IT — Italiano
                         </button>
                         <button data-lang="ru" class="w-full text-left px-4 py-2.5 font-code-sm text-label-caps text-xs tracking-widest text-on-surface-variant hover:text-primary hover:bg-primary-fixed/10 transition-all duration-150 flex items-center gap-3">
-                            <span class="text-base">🇷🇺</span> RU — Русский
+                            <span class="fi fi-ru" style="border-radius:2px;width:1.2em;height:0.9em;"></span> RU — Русский
                         </button>
                     </div>
                 </div>
@@ -103,11 +104,11 @@
             <a class="font-display text-body-md text-primary-fixed font-bold" href="/contact/" data-i18n="nav.contact">Contact</a>
             <!-- Language Selector (Mobile) -->
             <div class="flex flex-wrap gap-2 pt-2 border-t border-outline-variant/20">
-                <button data-lang="en" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇬🇧 EN</button>
-                <button data-lang="fr" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇫🇷 FR</button>
-                <button data-lang="es" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇪🇸 ES</button>
-                <button data-lang="it" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇮🇹 IT</button>
-                <button data-lang="ru" class="font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm">🇷🇺 RU</button>
+                <button data-lang="en" class="flex items-center gap-1.5 font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm"><span class="fi fi-gb" style="border-radius:2px;width:1.2em;height:0.9em;"></span> EN</button>
+                <button data-lang="fr" class="flex items-center gap-1.5 font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm"><span class="fi fi-fr" style="border-radius:2px;width:1.2em;height:0.9em;"></span> FR</button>
+                <button data-lang="es" class="flex items-center gap-1.5 font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm"><span class="fi fi-es" style="border-radius:2px;width:1.2em;height:0.9em;"></span> ES</button>
+                <button data-lang="it" class="flex items-center gap-1.5 font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm"><span class="fi fi-it" style="border-radius:2px;width:1.2em;height:0.9em;"></span> IT</button>
+                <button data-lang="ru" class="flex items-center gap-1.5 font-code-sm text-label-caps text-xs px-3 py-1.5 border border-outline-variant/40 text-on-surface-variant hover:text-primary hover:border-primary-fixed/60 transition-all rounded-sm"><span class="fi fi-ru" style="border-radius:2px;width:1.2em;height:0.9em;"></span> RU</button>
             </div>
             <a class="bg-primary-fixed text-on-primary-fixed py-3 text-center font-display text-body-md font-bold rounded hover:shadow-[0_0_10px_#0055ff]" href="/contact/" data-i18n="nav.hire_me">Hire Me</a>
         </div>
