@@ -277,20 +277,24 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-surface-container-lowest full-width border-t border-outline-variant flat no shadows relative z-10">
-        <div class="w-full px-margin-mobile md:px-margin-desktop py-12 flex flex-col md:flex-row justify-between items-center gap-base max-w-container-max mx-auto">
-            <div class="mb-6 md:mb-0">
+    <footer class="w-full bg-surface-container-lowest border-t border-outline-variant relative z-10">
+        <div class="w-full px-margin-mobile md:px-margin-desktop py-12 flex flex-col gap-8 max-w-container-max mx-auto">
+            <!-- Logo Row -->
+            <div class="flex justify-center md:justify-start">
                 <a href="/" class="block">
-                    <img src="/logo.png" alt="DEVELOPIA Logo" class="h-10 md:h-12 w-auto object-contain animate-pulse-slow" />
+                    <img src="/logo.png" alt="DEVELOPIA Logo" class="h-10 md:h-12 w-auto object-contain" />
                 </a>
             </div>
-            <div class="flex flex-wrap justify-center gap-6 md:gap-8 mt-8 md:mt-0">
-                <a class="font-code-sm text-code-sm uppercase tracking-widest text-outline hover:text-primary-fixed-dim transition-all hover:translate-x-1" href="/services/">Services</a>
-                <a class="font-code-sm text-code-sm uppercase tracking-widest text-outline hover:text-primary-fixed-dim transition-all hover:translate-x-1" href="#">Privacy</a>
-                <a class="font-code-sm text-code-sm uppercase tracking-widest text-outline hover:text-primary-fixed-dim transition-all hover:translate-x-1" href="#">Terms</a>
-            </div>
-            <div class="font-code-sm text-code-sm uppercase tracking-widest text-primary-fixed text-center md:text-right">
-                © 2026 DEVELOPIA. ENGINEERED FOR INNOVATION.
+            <!-- Bottom Row: Copyright & Links -->
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6 border-t border-outline-variant/10 pt-6">
+                <p class="font-code-sm text-code-sm text-outline uppercase tracking-widest text-center md:text-left">
+                    © 2026 DEVELOPIA. ENGINEERED FOR INNOVATION.
+                </p>
+                <div class="flex flex-wrap justify-center gap-6 md:gap-8">
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="/services/">Services</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#">Privacy</a>
+                    <a class="font-code-sm text-code-sm text-outline uppercase tracking-widest hover:text-primary-fixed-dim hover:translate-x-1 transition-all" href="#">Terms</a>
+                </div>
             </div>
         </div>
     </footer>
