@@ -17,3 +17,8 @@
 .DS_Store
 Thumbs.db
 desktop.ini
+
+# Node modules & production build directory
+node_modules/
+dist/
+
