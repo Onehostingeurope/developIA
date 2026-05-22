@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 1. Responsive Navigation Menu
     // ==========================================
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn') as HTMLButtonElement | null;
+    const mobileMenu = document.getElementById('mobile-menu') as HTMLDivElement | null;
     
     if (mobileMenuBtn && mobileMenu) {
-        mobileMenuBtn.addEventListener('click', (e) => {
+        mobileMenuBtn.addEventListener('click', (e: MouseEvent) => {
             e.stopPropagation();
             const isHidden = mobileMenu.classList.contains('hidden');
             if (isHidden) {
@@ -33,8 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Close menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenu.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        document.addEventListener('click', (e: MouseEvent) => {
+            const target = e.target as HTMLElement | null;
+            if (target && !mobileMenu.contains(target) && !mobileMenuBtn.contains(target)) {
                 mobileMenu.classList.add('hidden');
                 mobileMenuBtn.textContent = 'menu';
             }
@@ -44,10 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 2. Glassmorphic Radial Spotlight Hover Effect
     // ==========================================
-    const glassElements = document.querySelectorAll('.glass-card, .glass-panel');
+    const glassElements = document.querySelectorAll('.glass-card, .glass-panel') as NodeListOf<HTMLElement>;
     
     glassElements.forEach(el => {
-        el.addEventListener('mousemove', (e) => {
+        el.addEventListener('mousemove', (e: MouseEvent) => {
             const rect = el.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
@@ -60,40 +61,32 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     // 3. Form Focus Scanner & Transmit Overlay
     // ==========================================
-    const secureForm = document.getElementById('secure-contact-form');
-    const formFields = document.querySelectorAll('input, select, textarea');
-    const successScreen = document.getElementById('success-screen');
-    const resetBtn = document.getElementById('success-reset-btn');
+    const secureForm = document.getElementById('secure-contact-form') as HTMLFormElement | null;
+    const formFields = document.querySelectorAll('input, select, textarea') as NodeListOf<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>;
+    const successScreen = document.getElementById('success-screen') as HTMLDivElement | null;
+    const resetBtn = document.getElementById('success-reset-btn') as HTMLButtonElement | null;
 
     formFields.forEach(el => {
         el.addEventListener('focus', () => {
-            const container = el.closest('.glass-panel');
+            const container = el.closest('.glass-panel') as HTMLElement | null;
             if (container) {
-                const scanner = container.querySelector('.scanner-line');
+                const scanner = container.querySelector('.scanner-line') as HTMLElement | null;
                 if (scanner) {
                     scanner.style.animationPlayState = 'running';
                     scanner.style.opacity = '1';
                 }
             }
         });
-        
-        el.addEventListener('blur', () => {
-            const container = el.closest('.glass-panel');
-            if (container) {
-                const scanner = container.querySelector('.scanner-line');
-                // Keep playing if other inputs are focused, or reset state
-            }
-        });
     });
 
     if (secureForm && successScreen) {
-        secureForm.addEventListener('submit', (e) => {
+        secureForm.addEventListener('submit', (e: Event) => {
             e.preventDefault();
             
             // Fetch inputs for a realistic visual console log before transmitting
-            const name = document.getElementById('client-name')?.value || 'ANONYMOUS';
-            const email = document.getElementById('client-email')?.value || 'UNKNOWN';
-            const project = document.getElementById('project-class')?.value || 'UNDEFINED';
+            const name = (document.getElementById('client-name') as HTMLInputElement | null)?.value || 'ANONYMOUS';
+            const email = (document.getElementById('client-email') as HTMLInputElement | null)?.value || 'UNKNOWN';
+            const project = (document.getElementById('project-class') as HTMLSelectElement | null)?.value || 'UNDEFINED';
             
             console.log(`[SECURE HANDSHAKE INIT] Initiating transmit protocol...`);
             console.log(`[CLIENT CLASSIFICATION] Client: ${name} | Email: ${email}`);
@@ -117,10 +110,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Subtle Parallax for Technical Visuals
     // ==========================================
     window.addEventListener('scroll', () => {
-        const scrolled = window.pageYOffset;
-        
         // Select decorative images
-        const parallaxImgs = document.querySelectorAll('img[src*="aida-public"]');
+        const parallaxImgs = document.querySelectorAll('img[src*="aida-public"]') as NodeListOf<HTMLImageElement>;
         parallaxImgs.forEach(img => {
             // Check if element is in viewport before calculating transform
             const rect = img.getBoundingClientRect();

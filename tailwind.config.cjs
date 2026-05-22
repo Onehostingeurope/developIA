@@ -2,9 +2,9 @@
 module.exports = {
   content: [
     "./index.html",
-    "./services.html",
-    "./contact.html",
-    "./main.js"
+    "./services/index.html",
+    "./contact/index.html",
+    "./main.ts"
   ],
   darkMode: "class",
   theme: {
