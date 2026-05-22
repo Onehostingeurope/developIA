@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://developia.org/sitemap.xml
