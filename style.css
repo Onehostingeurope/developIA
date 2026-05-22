@@ -22,7 +22,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 219, 233, 0.08), transparent 40%);
+  background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 85, 255, 0.08), transparent 40%);
   z-index: 1;
   pointer-events: none;
   transition: opacity 0.5s ease;
@@ -34,18 +34,18 @@
 }
 
 .glow-cyan {
-  box-shadow: 0 0 15px rgba(0, 219, 233, 0.15);
+  box-shadow: 0 0 15px rgba(0, 85, 255, 0.15);
 }
 
 .hover-glow-cyan:hover {
-  box-shadow: 0 0 20px rgba(0, 219, 233, 0.4);
+  box-shadow: 0 0 20px rgba(0, 85, 255, 0.4);
 }
 
 .scanner-line {
   position: absolute;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #00dbe9, transparent);
+  background: linear-gradient(90deg, transparent, #0055ff, transparent);
   animation: scan 3s linear infinite;
   z-index: 2;
 }
@@ -63,15 +63,15 @@ body {
 }
 
 .glow-hover:hover {
-  box-shadow: 0 0 15px rgba(0, 219, 233, 0.3);
-  border-color: #00dbe9;
+  box-shadow: 0 0 15px rgba(0, 85, 255, 0.3);
+  border-color: #0055ff;
 }
 
 .scanline {
   position: absolute;
   width: 100%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #00dbe9, transparent);
+  background: linear-gradient(90deg, transparent, #0055ff, transparent);
   animation: scan 4s linear infinite;
   opacity: 0.5;
   z-index: 2;
@@ -92,7 +92,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 219, 233, 0.08), transparent 40%);
+  background: radial-gradient(800px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(0, 85, 255, 0.08), transparent 40%);
   z-index: 1;
   pointer-events: none;
   transition: opacity 0.5s ease;
