@@ -84,17 +84,71 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             
             // Fetch inputs for a realistic visual console log before transmitting
-            const name = (document.getElementById('client-name') as HTMLInputElement | null)?.value || 'ANONYMOUS';
-            const email = (document.getElementById('client-email') as HTMLInputElement | null)?.value || 'UNKNOWN';
-            const project = (document.getElementById('project-class') as HTMLSelectElement | null)?.value || 'UNDEFINED';
+            const nameEl = document.getElementById('client-name') as HTMLInputElement | null;
+            const emailEl = document.getElementById('client-email') as HTMLInputElement | null;
+            const projectEl = document.getElementById('project-class') as HTMLSelectElement | null;
+            const messageEl = document.getElementById('mission-params') as HTMLTextAreaElement | null;
+            const submitBtn = secureForm.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+            
+            const name = nameEl?.value || 'ANONYMOUS';
+            const email = emailEl?.value || 'UNKNOWN';
+            const project = projectEl?.value || 'UNDEFINED';
+            const message = messageEl?.value || '';
             
             console.log(`[SECURE HANDSHAKE INIT] Initiating transmit protocol...`);
             console.log(`[CLIENT CLASSIFICATION] Client: ${name} | Email: ${email}`);
             console.log(`[MISSION SCHEDULING] Target Arch: ${project}`);
             
-            // Show premium success transmission window
-            successScreen.classList.remove('hidden');
-            successScreen.classList.add('flex', 'animate-fade-in');
+            // Interactive visual loading feedback: disable submit button and set text to TRANSMITTING with a spinning loader
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    TRANSMITTING...
+                    <span class="material-symbols-outlined animate-spin text-lg">sync</span>
+                `;
+            }
+            
+            // Send AJAX payload to FormSubmit.co
+            fetch('https://formsubmit.co/ajax/onehostingeurope@gmail.com', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    project_type: project,
+                    message: message,
+                    _subject: `New Inquiry from ${name} (Develop IA)`
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(`[TRANSMIT SUCCESS] Data uploaded. Response:`, data);
+                // Show premium success transmission window
+                successScreen.classList.remove('hidden');
+                successScreen.classList.add('flex', 'animate-fade-in');
+            })
+            .catch(error => {
+                console.error(`[TRANSMIT ERROR] Failed to send:`, error);
+                alert('Transmission protocol encountered an error. Please try again.');
+            })
+            .finally(() => {
+                // Restore button state
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = `
+                        TRANSMIT MESSAGE
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">send</span>
+                    `;
+                }
+            });
         });
     }
 

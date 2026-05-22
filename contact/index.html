@@ -112,34 +112,6 @@
                                 <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim group-hover:translate-x-1 transition-all">arrow_forward</span>
                             </div>
                         </a>
-                        <a class="glass-panel p-6 group transition-all duration-300 hover:border-primary-fixed-dim" href="https://linkedin.com/company/developia" target="_blank">
-                            <div class="flex items-center justify-between relative z-10">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center text-primary-fixed-dim">
-                                        <span class="material-symbols-outlined">link</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-code-sm text-label-caps text-outline uppercase mb-1">Professional Network</p>
-                                        <p class="font-display font-semibold">linkedin.com/company/developia</p>
-                                    </div>
-                                </div>
-                                <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim group-hover:translate-x-1 transition-all">arrow_forward</span>
-                            </div>
-                        </a>
-                        <a class="glass-panel p-6 group transition-all duration-300 hover:border-primary-fixed-dim" href="https://github.com/Onehostingeurope/developIA.git" target="_blank">
-                            <div class="flex items-center justify-between relative z-10">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center text-primary-fixed-dim">
-                                        <span class="material-symbols-outlined">code</span>
-                                    </div>
-                                    <div>
-                                        <p class="font-code-sm text-label-caps text-outline uppercase mb-1">Source Repository</p>
-                                        <p class="font-display font-semibold">github.com/Onehostingeurope/developIA</p>
-                                    </div>
-                                </div>
-                                <span class="material-symbols-outlined text-outline group-hover:text-primary-fixed-dim group-hover:translate-x-1 transition-all">arrow_forward</span>
-                            </div>
-                        </a>
                     </div>
                 </div>
                 
@@ -165,18 +137,18 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                             <div class="group">
                                 <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Client_Name</label>
-                                <input id="client-name" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none" placeholder="e.g. Satoshi Nakamoto" type="text"/>
+                                <input id="client-name" name="name" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none" placeholder="e.g. Satoshi Nakamoto" type="text"/>
                             </div>
                             <div class="group">
                                 <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Client_Email</label>
-                                <input id="client-email" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none" placeholder="name@developia.org" type="email"/>
+                                <input id="client-email" name="email" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none" placeholder="name@developia.org" type="email"/>
                             </div>
                         </div>
                         
                         <div class="group">
                             <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Project_Classification</label>
                             <div class="relative">
-                                <select id="project-class" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface font-code-sm transition-all outline-none appearance-none">
+                                <select id="project-class" name="project_type" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface font-code-sm transition-all outline-none appearance-none">
                                     <option disabled="" selected="" value="">Select Architecture Type</option>
                                     <option value="ai_integration">AI / Machine Learning Integration</option>
                                     <option value="full_stack">Full-Stack Ecosystem Development</option>
@@ -189,7 +161,7 @@
                         
                         <div class="group">
                             <label class="block font-code-sm text-label-caps text-outline mb-2 uppercase group-focus-within:text-primary-fixed-dim transition-colors">Mission_Parameters</label>
-                            <textarea id="mission-params" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none resize-none" placeholder="Define the scope, objectives, and technical constraints of your project..." rows="5"></textarea>
+                            <textarea id="mission-params" name="message" required class="w-full bg-surface-container-low border border-outline-variant focus:border-primary-fixed-dim focus:ring-1 focus:ring-primary-fixed-dim rounded-none px-4 py-3 text-on-surface placeholder:text-outline/40 font-code-sm transition-all outline-none resize-none" placeholder="Define the scope, objectives, and technical constraints of your project..." rows="5"></textarea>
                         </div>
                         
                         <div class="flex flex-col md:flex-row items-center gap-6 pt-4">
