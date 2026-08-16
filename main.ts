@@ -285,8 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }
             
-            // Send AJAX payload to FormSubmit.co
-            fetch('https://formsubmit.co/ajax/onehostingeurope@gmail.com', {
+            // Send AJAX payload to PHP MySQL backend
+            fetch('api/submit.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -296,8 +296,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     name: name,
                     email: email,
                     project_type: project,
-                    message: message,
-                    _subject: `New Inquiry from ${name} (Develop IA)`
+                    message: message
                 })
             })
             .then(response => {
