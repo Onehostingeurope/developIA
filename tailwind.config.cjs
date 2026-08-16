@@ -4,7 +4,10 @@ module.exports = {
     "./index.html",
     "./services/index.html",
     "./contact/index.html",
-    "./main.ts"
+    "./main.ts",
+    "./admin/**/*.php",
+    "./includes/**/*.php",
+    "./*.php"
   ],
   darkMode: "class",
   theme: {
