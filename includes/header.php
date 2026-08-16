@@ -7,6 +7,9 @@ $current_page = $current_page ?? 'home';
 $css_file = '/style.css';
 $asset_css = glob(__DIR__ . '/../assets/main-*.css');
 if (!empty($asset_css)) {
+    usort($asset_css, function($a, $b) {
+        return filemtime($b) - filemtime($a);
+    });
     $css_file = '/assets/' . basename($asset_css[0]);
 }
 ?>
@@ -31,7 +34,6 @@ if (!empty($asset_css)) {
 
     <!-- Scripts & Fonts -->
     <link rel="stylesheet" href="<?php echo htmlspecialchars($css_file); ?>"/>
-    <link rel="stylesheet" href="/style.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;family=Geist:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
     <script>
