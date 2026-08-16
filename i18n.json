@@ -5,7 +5,8 @@
             "services": "Services",
             "portfolio": "Portfolio",
             "contact": "Contact",
-            "hire_me": "Hire Me"
+            "hire_me": "Hire Me",
+            "blog": "Blog"
         },
         "footer": {
             "copyright": "© 2026 DEVELOPIA. ENGINEERED FOR INNOVATION.",
@@ -243,7 +244,8 @@
             "services": "Services",
             "portfolio": "Portfolio",
             "contact": "Contact",
-            "hire_me": "Engagez-moi"
+            "hire_me": "Engagez-moi",
+            "blog": "Blog"
         },
         "footer": {
             "copyright": "© 2026 DEVELOPIA. CONÇU POUR L'INNOVATION.",
@@ -480,7 +482,8 @@
             "services": "Servicios",
             "portfolio": "Portfolio",
             "contact": "Contacto",
-            "hire_me": "Contrátame"
+            "hire_me": "Contrátame",
+            "blog": "Blog"
         },
         "footer": {
             "copyright": "© 2026 DEVELOPIA. INGENIERÍA PARA LA INNOVACIÓN.",
@@ -718,7 +721,8 @@
             "services": "Servizi",
             "portfolio": "Portfolio",
             "contact": "Contatti",
-            "hire_me": "Assumimi"
+            "hire_me": "Assumimi",
+            "blog": "Blog"
         },
         "footer": {
             "copyright": "© 2026 DEVELOPIA. INGEGNERE PER L'INNOVAZIONE.",
@@ -956,7 +960,8 @@
             "services": "Услуги",
             "portfolio": "Портфолио",
             "contact": "Контакты",
-            "hire_me": "Нанять меня"
+            "hire_me": "Нанять меня",
+            "blog": "Блог"
         },
         "footer": {
             "copyright": "© 2026 DEVELOPIA. СПРОЕКТИРОВАНО ДЛЯ ИННОВАЦИЙ.",

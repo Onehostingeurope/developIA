@@ -32,3 +32,19 @@ CREATE TABLE IF NOT EXISTS `admin_users` (
 INSERT INTO `admin_users` (`username`, `password_hash`, `email`)
 SELECT 'admin', '$2y$10$e8wEHQc76p.4jTfEFA.u8.H1ZqS0cZ8hK2N/7WqW8P0v2o7k0G7', 'contact@developia.org'
 WHERE NOT EXISTS (SELECT 1 FROM `admin_users` WHERE `username` = 'admin');
+
+-- Blog Posts Table
+CREATE TABLE IF NOT EXISTS `blog_posts` (
+  `id` INT AUTO_INCREMENT PRIMARY KEY,
+  `title` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL UNIQUE,
+  `content` TEXT NOT NULL,
+  `summary` TEXT NOT NULL,
+  `image_url` VARCHAR(255) DEFAULT NULL,
+  `status` ENUM('draft', 'published') DEFAULT 'draft',
+  `created_at` DATETIME DEFAULT CURRENT_TIMESTAMP,
+  `published_at` DATETIME DEFAULT NULL,
+  INDEX `idx_status` (`status`),
+  INDEX `idx_published_at` (`published_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+

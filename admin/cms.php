@@ -1,9 +1,10 @@
 <?php
 /**
- * DevelopIA - Admin CMS Dashboard (Content & Media Management System)
+ * DevelopIA - Admin CMS Dashboard (Content, Media, Portfolio & Blog Management System)
  */
 
 require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../db.php';
 
 if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
     header('Location: login.php');
@@ -12,21 +13,25 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 
 $i18nFile = __DIR__ . '/../i18n.json';
 $portfolioFile = __DIR__ . '/../portfolio.json';
+$settingsFile = __DIR__ . '/../settings.json';
 
 if (!file_exists($i18nFile)) {
     die("Error: i18n.json translations file not found.");
 }
 if (!file_exists($portfolioFile)) {
-    // Seed default portfolio file if missing
     file_put_contents($portfolioFile, json_encode([], JSON_PRETTY_PRINT));
+}
+if (!file_exists($settingsFile)) {
+    file_put_contents($settingsFile, json_encode(['gemini_api_key' => '', 'cron_token' => 'developia_secure_token_2026'], JSON_PRETTY_PRINT));
 }
 
 $translations = json_decode(file_get_contents($i18nFile), true);
 $projects = json_decode(file_get_contents($portfolioFile), true) ?: [];
+$settings = json_decode(file_get_contents($settingsFile), true) ?: [];
 
 $message = '';
 $error = '';
-$activeTab = $_GET['tab'] ?? 'content'; // 'content', 'media', or 'portfolio'
+$activeTab = $_GET['tab'] ?? 'content'; // 'content', 'media', 'portfolio', 'blog', or 'settings'
 
 $languages = ['en' => 'English', 'fr' => 'Français', 'es' => 'Español', 'it' => 'Italiano', 'ru' => 'Русский'];
 $sections = ['nav' => 'Navigation', 'footer' => 'Footer', 'index' => 'Home Page', 'services' => 'Services Page', 'contact' => 'Contact Page'];
@@ -39,6 +44,18 @@ if (!array_key_exists($selectedLang, $languages)) {
 }
 if (!array_key_exists($selectedSection, $sections)) {
     $selectedSection = 'index';
+}
+
+$pdo = getDBConnection();
+$blogPosts = [];
+if ($pdo) {
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM `blog_posts` ORDER BY `created_at` DESC");
+        $stmt->execute();
+        $blogPosts = $stmt->fetchAll();
+    } catch (PDOException $e) {
+        $error = "Failed to load blog posts: " . $e->getMessage();
+    }
 }
 
 // Handle text content saving
@@ -143,7 +160,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project'])) {
         if ($p['id'] !== $deleteId) {
             $filteredProjects[] = $p;
         } else {
-            // Delete image file from server in-place
             $imageFile = __DIR__ . '/../' . $p['image'];
             if (file_exists($imageFile) && strpos($p['image'], 'portfolio_project_') === 0) {
                 @unlink($imageFile);
@@ -156,6 +172,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project'])) {
         $message = "Portfolio project deleted successfully!";
     } else {
         $error = "Failed to save portfolio updates.";
+    }
+}
+
+// Handle Settings saving
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_settings'])) {
+    $settings['gemini_api_key'] = $_POST['gemini_api_key'];
+    $settings['cron_token'] = $_POST['cron_token'];
+    
+    if (file_put_contents($settingsFile, json_encode($settings, JSON_PRETTY_PRINT))) {
+        $message = "Branding and API settings updated successfully!";
+    } else {
+        $error = "Failed to save settings file.";
+    }
+}
+
+// Handle Blog CRUD saving
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_blog_post'])) {
+    $post_id = $_POST['post_id'] ?? '';
+    $title = $_POST['post_title'];
+    $slug = $_POST['post_slug'];
+    $summary = $_POST['post_summary'];
+    $content = $_POST['post_content'];
+    $status = $_POST['post_status'];
+    
+    $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $slug)));
+    $slug = trim($slug, '-');
+    
+    if ($pdo) {
+        try {
+            if ($post_id) {
+                $stmt = $pdo->prepare("UPDATE `blog_posts` SET `title` = :title, `slug` = :slug, `summary` = :summary, `content` = :content, `status` = :status, `published_at` = CASE WHEN :status = 'published' AND `published_at` IS NULL THEN NOW() ELSE `published_at` END WHERE `id` = :id");
+                $stmt->execute([
+                    ':title' => $title,
+                    ':slug' => $slug,
+                    ':summary' => $summary,
+                    ':content' => $content,
+                    ':status' => $status,
+                    ':id' => $post_id
+                ]);
+                $message = "Blog post updated successfully!";
+            } else {
+                $stmt = $pdo->prepare("INSERT INTO `blog_posts` (`title`, `slug`, `summary`, `content`, `status`, `published_at`) VALUES (:title, :slug, :summary, :content, :status, CASE WHEN :status = 'published' THEN NOW() ELSE NULL END)");
+                $stmt->execute([
+                    ':title' => $title,
+                    ':slug' => $slug,
+                    ':summary' => $summary,
+                    ':content' => $content,
+                    ':status' => $status
+                ]);
+                $message = "Blog post created successfully!";
+            }
+            
+            // Reload post list
+            $stmt = $pdo->prepare("SELECT * FROM `blog_posts` ORDER BY `created_at` DESC");
+            $stmt->execute();
+            $blogPosts = $stmt->fetchAll();
+        } catch (PDOException $e) {
+            $error = "Database operation failed: " . $e->getMessage();
+        }
+    }
+}
+
+// Handle Blog post deleting
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_blog_post'])) {
+    $post_id = (int)$_POST['post_id'];
+    if ($pdo) {
+        try {
+            $stmt = $pdo->prepare("DELETE FROM `blog_posts` WHERE `id` = :id");
+            $stmt->execute([':id' => $post_id]);
+            $message = "Blog post deleted successfully!";
+            
+            // Reload post list
+            $stmt = $pdo->prepare("SELECT * FROM `blog_posts` ORDER BY `created_at` DESC");
+            $stmt->execute();
+            $blogPosts = $stmt->fetchAll();
+        } catch (PDOException $e) {
+            $error = "Failed to delete blog post: " . $e->getMessage();
+        }
     }
 }
 
@@ -197,23 +291,31 @@ if (!empty($asset_css)) {
         <!-- Dashboard Heading & Tabs -->
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8 border-b border-outline-variant/20 pb-6">
             <div>
-                <h2 class="font-display text-2xl font-bold text-white mb-2">Content & Media Manager (CMS)</h2>
-                <p class="font-code-sm text-sm text-outline">Configure dynamic content text, portfolio links, and images for the main website.</p>
+                <h2 class="font-display text-2xl font-bold text-white mb-2">Content, Media & Blog (CMS)</h2>
+                <p class="font-code-sm text-sm text-outline">Configure translation text, media, custom portfolio projects, and automated AI blog content.</p>
             </div>
             
             <!-- Tabs -->
-            <div class="flex bg-surface-container-low p-1 border border-outline-variant/30 rounded">
+            <div class="flex bg-surface-container-low p-1 border border-outline-variant/30 rounded flex-wrap gap-1">
                 <a href="?tab=content&lang=<?php echo $selectedLang; ?>&section=<?php echo $selectedSection; ?>" 
-                   class="px-5 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'content' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
+                   class="px-4 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'content' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
                     TEXT CONTENT
                 </a>
                 <a href="?tab=media" 
-                   class="px-5 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'media' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
+                   class="px-4 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'media' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
                     CORE IMAGES
                 </a>
                 <a href="?tab=portfolio" 
-                   class="px-5 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'portfolio' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
-                    PORTFOLIO PROJECTS
+                   class="px-4 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'portfolio' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
+                    PORTFOLIO
+                </a>
+                <a href="?tab=blog" 
+                   class="px-4 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'blog' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
+                    BLOG POSTS
+                </a>
+                <a href="?tab=settings" 
+                   class="px-4 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'settings' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
+                    SETTINGS & API
                 </a>
             </div>
         </div>
@@ -237,7 +339,6 @@ if (!empty($asset_css)) {
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <!-- Sidebar: Languages & Sections -->
                 <div class="lg:col-span-4 space-y-6">
-                    <!-- Language Selector -->
                     <div class="glass-panel p-6 border border-outline-variant/30 rounded">
                         <h3 class="font-display text-sm font-bold text-white mb-4 uppercase tracking-wider">// Target Language</h3>
                         <div class="flex flex-col gap-2">
@@ -251,7 +352,6 @@ if (!empty($asset_css)) {
                         </div>
                     </div>
 
-                    <!-- Section Selector -->
                     <div class="glass-panel p-6 border border-outline-variant/30 rounded">
                         <h3 class="font-display text-sm font-bold text-white mb-4 uppercase tracking-wider">// Page Sections</h3>
                         <div class="flex flex-col gap-2">
@@ -336,7 +436,6 @@ if (!empty($asset_css)) {
                     <input type="hidden" name="upload_media" value="1"/>
                     
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                        <!-- Hero Image Slot -->
                         <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
                             <div>
                                 <h4 class="font-display font-bold text-white text-sm">Main Hero Background</h4>
@@ -346,7 +445,6 @@ if (!empty($asset_css)) {
                             <input type="file" name="hero" accept=".jpg,.jpeg" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
                         </div>
 
-                        <!-- Logo Image Slot -->
                         <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
                             <div>
                                 <h4 class="font-display font-bold text-white text-sm">Website Header Logo</h4>
@@ -358,7 +456,6 @@ if (!empty($asset_css)) {
                             <input type="file" name="logo" accept=".png" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
                         </div>
 
-                        <!-- Favicon Image Slot -->
                         <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
                             <div>
                                 <h4 class="font-display font-bold text-white text-sm">Tab Favicon Icon</h4>
@@ -383,10 +480,8 @@ if (!empty($asset_css)) {
         <!-- ==================== TAB 3: PORTFOLIO MANAGER ==================== -->
         <?php elseif ($activeTab === 'portfolio'): ?>
             <div class="space-y-8">
-                <!-- Existing Projects Grid -->
                 <div class="glass-panel p-8 border border-outline-variant/30 rounded">
                     <h3 class="font-display text-lg font-bold text-white mb-6 uppercase tracking-wider">// Existing Portfolio Projects</h3>
-                    
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <?php if (empty($projects)): ?>
                             <p class="text-outline font-code-sm text-sm col-span-3">No portfolio projects configured.</p>
@@ -416,7 +511,6 @@ if (!empty($asset_css)) {
                     </div>
                 </div>
 
-                <!-- Add New Project Form -->
                 <div class="glass-panel p-8 border border-outline-variant/30 rounded">
                     <div class="mb-6 border-b border-outline-variant/20 pb-4">
                         <span class="font-code-sm text-xs text-primary-fixed uppercase tracking-widest">// Expansion Panel</span>
@@ -425,9 +519,7 @@ if (!empty($asset_css)) {
 
                     <form method="POST" action="" enctype="multipart/form-data" class="space-y-6">
                         <input type="hidden" name="add_project" value="1"/>
-                        
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <!-- Link & Image -->
                             <div class="space-y-4">
                                 <div class="space-y-2">
                                     <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Project Redirect Link (URL)</label>
@@ -439,10 +531,8 @@ if (!empty($asset_css)) {
                                 </div>
                             </div>
                             
-                            <!-- Categories & Titles -->
                             <div class="space-y-4 bg-surface-container-low border border-outline-variant/20 rounded p-6">
                                 <h4 class="font-display text-xs font-bold text-white uppercase tracking-wider mb-2">// Multi-language Project Details</h4>
-                                
                                 <div class="space-y-4 max-h-[250px] overflow-y-auto pr-2">
                                     <?php foreach ($languages as $code => $name): ?>
                                         <div class="grid grid-cols-2 gap-4 border-b border-outline-variant/10 pb-3 last:border-0">
@@ -469,6 +559,174 @@ if (!empty($asset_css)) {
                         </div>
                     </form>
                 </div>
+            </div>
+
+        <!-- ==================== TAB 4: BLOG POSTS CRUD ==================== -->
+        <?php elseif ($activeTab === 'blog'): ?>
+            <?php
+            $editPost = null;
+            if (isset($_GET['edit_id'])) {
+                $editId = (int)$_GET['edit_id'];
+                foreach ($blogPosts as $bp) {
+                    if ((int)$bp['id'] === $editId) {
+                        $editPost = $bp;
+                        break;
+                    }
+                }
+            }
+            ?>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                <!-- Blog Listing Table -->
+                <div class="lg:col-span-7 glass-panel p-6 border border-outline-variant/30 rounded">
+                    <h3 class="font-display text-sm font-bold text-white mb-4 uppercase tracking-wider">// Published & Draft Articles</h3>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left font-display border-collapse text-xs">
+                            <thead>
+                                <tr class="bg-surface-container border-b border-outline-variant/30 font-code-sm text-[10px] text-outline uppercase tracking-wider">
+                                    <th class="p-3">Title</th>
+                                    <th class="p-3">Slug</th>
+                                    <th class="p-3">Status</th>
+                                    <th class="p-3 text-right">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-outline-variant/20">
+                                <?php if (empty($blogPosts)): ?>
+                                    <tr>
+                                        <td colspan="4" class="p-8 text-center text-outline font-code-sm">No blog posts found.</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($blogPosts as $post): ?>
+                                        <tr class="hover:bg-surface-container-low/40 transition-colors">
+                                            <td class="p-3">
+                                                <div class="font-bold text-white"><?php echo htmlspecialchars($post['title']); ?></div>
+                                                <div class="text-[10px] text-outline mt-0.5">Created: <?php echo date('M d, Y', strtotime($post['created_at'])); ?></div>
+                                            </td>
+                                            <td class="p-3 font-mono text-outline"><?php echo htmlspecialchars($post['slug']); ?></td>
+                                            <td class="p-3">
+                                                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold <?php echo $post['status'] === 'published' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-yellow-500/10 text-yellow-400 border border-yellow-500/20'; ?>">
+                                                    <?php echo strtoupper($post['status']); ?>
+                                                </span>
+                                            </td>
+                                            <td class="p-3 text-right space-x-2 whitespace-nowrap">
+                                                <a href="?tab=blog&edit_id=<?php echo $post['id']; ?>" class="text-primary hover:underline text-xs font-mono">Edit</a>
+                                                <form method="POST" action="" class="inline" onsubmit="return confirm('Delete this blog post?')">
+                                                    <input type="hidden" name="delete_blog_post" value="1"/>
+                                                    <input type="hidden" name="post_id" value="<?php echo $post['id']; ?>"/>
+                                                    <button type="submit" class="text-red-400 hover:text-red-300 text-xs font-mono">Delete</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Blog Editor Form -->
+                <div class="lg:col-span-5 glass-panel p-6 border border-outline-variant/30 rounded">
+                    <h3 class="font-display text-sm font-bold text-white mb-4 uppercase tracking-wider">
+                        <?php echo $editPost ? '// Edit Blog Post' : '// Create Blog Post'; ?>
+                    </h3>
+                    
+                    <form method="POST" action="" class="space-y-4 text-sm">
+                        <input type="hidden" name="save_blog_post" value="1"/>
+                        <?php if ($editPost): ?>
+                            <input type="hidden" name="post_id" value="<?php echo $editPost['id']; ?>"/>
+                        <?php endif; ?>
+                        
+                        <div class="space-y-1">
+                            <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Title</label>
+                            <input type="text" name="post_title" required value="<?php echo $editPost ? htmlspecialchars($editPost['title']) : ''; ?>" placeholder="Article Title" class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-on-surface focus:border-primary-fixed-dim focus:outline-none"/>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Slug (URL friendly path)</label>
+                            <input type="text" name="post_slug" required value="<?php echo $editPost ? htmlspecialchars($editPost['slug']) : ''; ?>" placeholder="e.g. dynamic-saas-architectures" class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-on-surface font-mono text-xs focus:border-primary-fixed-dim focus:outline-none"/>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Summary / Subtitle</label>
+                            <textarea name="post_summary" rows="2" required placeholder="Brief article description for listings..." class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-on-surface focus:border-primary-fixed-dim focus:outline-none"><?php echo $editPost ? htmlspecialchars($editPost['summary']) : ''; ?></textarea>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Body Content (HTML allowed)</label>
+                            <textarea name="post_content" rows="8" required placeholder="Write article here..." class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-on-surface font-display focus:border-primary-fixed-dim focus:outline-none"><?php echo $editPost ? htmlspecialchars($editPost['content']) : ''; ?></textarea>
+                        </div>
+
+                        <div class="space-y-1">
+                            <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Status</label>
+                            <select name="post_status" class="w-full bg-surface-container border border-outline-variant rounded px-3 py-2 text-on-surface focus:border-primary-fixed-dim focus:outline-none">
+                                <option value="draft" <?php echo $editPost && $editPost['status'] === 'draft' ? 'selected' : ''; ?>>Draft</option>
+                                <option value="published" <?php echo $editPost && $editPost['status'] === 'published' ? 'selected' : ''; ?>>Published</option>
+                            </select>
+                        </div>
+
+                        <div class="pt-4 border-t border-outline-variant/20 flex justify-between items-center">
+                            <?php if ($editPost): ?>
+                                <a href="?tab=blog" class="text-outline hover:text-white text-xs font-mono">&times; Cancel Edit</a>
+                            <?php else: ?>
+                                <div></div>
+                            <?php endif; ?>
+                            <button type="submit" class="bg-primary-fixed text-on-primary-fixed px-6 py-2 font-display font-bold rounded active:scale-95 transition-all">
+                                <?php echo $editPost ? 'UPDATE' : 'PUBLISH'; ?>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        <!-- ==================== TAB 5: AI & API SETTINGS ==================== -->
+        <?php elseif ($activeTab === 'settings'): ?>
+            <div class="glass-panel p-8 border border-outline-variant/30 rounded max-w-2xl mx-auto">
+                <div class="mb-6 border-b border-outline-variant/20 pb-4">
+                    <span class="font-code-sm text-xs text-primary-fixed uppercase tracking-widest">// Operations Center</span>
+                    <h3 class="font-display text-xl font-bold text-white mt-1">AI Blog Config & API Settings</h3>
+                </div>
+
+                <form method="POST" action="" class="space-y-6">
+                    <input type="hidden" name="save_settings" value="1"/>
+                    
+                    <div class="space-y-2">
+                        <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Gemini API Key</label>
+                        <input type="password" 
+                               name="gemini_api_key" 
+                               value="<?php echo htmlspecialchars($settings['gemini_api_key'] ?? ''); ?>" 
+                               placeholder="AIzaSy..." 
+                               class="w-full bg-surface-container border border-outline-variant rounded px-4 py-3 text-on-surface font-mono text-sm focus:border-primary-fixed-dim focus:outline-none"
+                        />
+                        <span class="font-code-sm text-[10px] text-outline block">Used by the daily cron generator to write tech articles using Gemini 1.5 Flash.</span>
+                    </div>
+
+                    <div class="space-y-2">
+                        <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Cron Access Token</label>
+                        <input type="text" 
+                               name="cron_token" 
+                               value="<?php echo htmlspecialchars($settings['cron_token'] ?? 'developia_secure_token_2026'); ?>" 
+                               required
+                               placeholder="Secret Token" 
+                               class="w-full bg-surface-container border border-outline-variant rounded px-4 py-3 text-on-surface font-mono text-sm focus:border-primary-fixed-dim focus:outline-none"
+                        />
+                        <span class="font-code-sm text-[10px] text-outline block">Security key to restrict unauthorized API executions.</span>
+                    </div>
+
+                    <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-3">
+                        <h4 class="font-display text-xs font-bold text-white uppercase tracking-wider">// cPanel Automated Cron Command</h4>
+                        <p class="text-xs text-on-surface-variant leading-relaxed">
+                            To publish a new AI-generated blog post automatically every day, set up a **Cron Job** in your cPanel dashboard running once per day with the following command:
+                        </p>
+                        <div class="bg-background/80 border border-outline-variant/30 rounded p-3 font-mono text-xs text-primary-fixed select-all whitespace-pre-wrap">curl -s "https://developia.org/api/cron-generate-blog.php?token=<?php echo urlencode($settings['cron_token'] ?? 'developia_secure_token_2026'); ?>"</div>
+                    </div>
+
+                    <div class="pt-6 border-t border-outline-variant/20 flex justify-end">
+                        <button type="submit" class="bg-primary-fixed text-on-primary-fixed px-10 py-3 font-display font-bold hover:shadow-[0_0_20px_#0055ff] transition-all rounded active:scale-95 flex items-center gap-2">
+                            <span class="material-symbols-outlined text-sm">settings</span>
+                            SAVE SETTINGS
+                        </button>
+                    </div>
+                </form>
             </div>
         <?php endif; ?>
     </main>
