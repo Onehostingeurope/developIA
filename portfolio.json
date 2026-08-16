@@ -1,0 +1,59 @@
+[
+    {
+        "id": 1,
+        "image": "easydubbing.jpg",
+        "link": "https://www.easydubbing.uk/",
+        "title": {
+            "en": "Easy Dubbing",
+            "fr": "Easy Dubbing",
+            "es": "Easy Dubbing",
+            "it": "Easy Dubbing",
+            "ru": "Easy Dubbing"
+        },
+        "category": {
+            "en": "AI Video Localization & Dubbing",
+            "fr": "Localisation Vidéo & Doublage par IA",
+            "es": "Localización y Doblaje de Video con IA",
+            "it": "Localizzazione Video e Doppiaggio con IA",
+            "ru": "Локализация и Дублирование Видео с ИИ"
+        }
+    },
+    {
+        "id": 2,
+        "image": "tunemusics.png",
+        "link": "https://tunemusics.com/",
+        "title": {
+            "en": "TuneMusics",
+            "fr": "TuneMusics",
+            "es": "TuneMusics",
+            "it": "TuneMusics",
+            "ru": "TuneMusics"
+        },
+        "category": {
+            "en": "Music Platform",
+            "fr": "Plateforme Musicale",
+            "es": "Plataforma de Música",
+            "it": "Piattaforma Musicale",
+            "ru": "Музыкальная Платформа"
+        }
+    },
+    {
+        "id": 3,
+        "image": "social_ai_publisher.png",
+        "link": "https://www.socialaipublisher.com/",
+        "title": {
+            "en": "Social AI Publisher",
+            "fr": "Social AI Publisher",
+            "es": "Social AI Publisher",
+            "it": "Social AI Publisher",
+            "ru": "Social AI Publisher"
+        },
+        "category": {
+            "en": "AI Content & Publishing",
+            "fr": "Création de Contenu & Publication IA",
+            "es": "Generación de Contenido y Publicación con IA",
+            "it": "Generazione di Contenuti e Pubblicazione IA",
+            "ru": "Генерация Контента и Публикация с ИИ"
+        }
+    }
+]

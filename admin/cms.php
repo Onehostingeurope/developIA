@@ -11,15 +11,22 @@ if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== tru
 }
 
 $i18nFile = __DIR__ . '/../i18n.json';
+$portfolioFile = __DIR__ . '/../portfolio.json';
+
 if (!file_exists($i18nFile)) {
     die("Error: i18n.json translations file not found.");
 }
+if (!file_exists($portfolioFile)) {
+    // Seed default portfolio file if missing
+    file_put_contents($portfolioFile, json_encode([], JSON_PRETTY_PRINT));
+}
 
 $translations = json_decode(file_get_contents($i18nFile), true);
+$projects = json_decode(file_get_contents($portfolioFile), true) ?: [];
 
 $message = '';
 $error = '';
-$activeTab = $_GET['tab'] ?? 'content'; // 'content' or 'media'
+$activeTab = $_GET['tab'] ?? 'content'; // 'content', 'media', or 'portfolio'
 
 $languages = ['en' => 'English', 'fr' => 'Français', 'es' => 'Español', 'it' => 'Italiano', 'ru' => 'Русский'];
 $sections = ['nav' => 'Navigation', 'footer' => 'Footer', 'index' => 'Home Page', 'services' => 'Services Page', 'contact' => 'Contact Page'];
@@ -49,14 +56,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['save_content'])) {
     }
 }
 
-// Handle image upload and replacement
+// Handle static image upload and replacement
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_media'])) {
     $target_dir = __DIR__ . '/../';
     $file_keys = [
         'hero' => 'developia_hero.jpg',
-        'easydubbing' => 'easydubbing.jpg',
-        'tunemusics' => 'tunemusics.png',
-        'social_ai_publisher' => 'social_ai_publisher.png',
         'logo' => 'logo.png',
         'favicon' => 'favicon.png'
     ];
@@ -66,7 +70,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_media'])) {
         if (isset($_FILES[$key]) && $_FILES[$key]['error'] === UPLOAD_ERR_OK) {
             $target_file = $target_dir . $filename;
             if (move_uploaded_file($_FILES[$key]['tmp_name'], $target_file)) {
-                $message .= "Successfully replaced " . htmlspecialchars($filename) . ". ";
                 $uploaded_count++;
             } else {
                 $error .= "Failed to upload " . htmlspecialchars($filename) . ". ";
@@ -75,7 +78,84 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['upload_media'])) {
     }
     
     if ($uploaded_count > 0 && empty($error)) {
-        $message = "All selected media files replaced successfully!";
+        $message = "Selected core media assets replaced successfully!";
+    }
+}
+
+// Handle adding a new portfolio project
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['add_project'])) {
+    $nextId = 1;
+    foreach ($projects as $p) {
+        if ($p['id'] >= $nextId) {
+            $nextId = $p['id'] + 1;
+        }
+    }
+    
+    // Handle image upload
+    $imageFilename = '';
+    if (isset($_FILES['project_image']) && $_FILES['project_image']['error'] === UPLOAD_ERR_OK) {
+        $ext = strtolower(pathinfo($_FILES['project_image']['name'], PATHINFO_EXTENSION));
+        $imageFilename = "portfolio_project_" . $nextId . "." . $ext;
+        $target_file = __DIR__ . '/../' . $imageFilename;
+        if (!move_uploaded_file($_FILES['project_image']['tmp_name'], $target_file)) {
+            $error = "Failed to upload project image.";
+        }
+    } else {
+        $error = "Please upload a cover image for the project.";
+    }
+    
+    if (empty($error)) {
+        $newProject = [
+            'id' => $nextId,
+            'image' => $imageFilename,
+            'link' => $_POST['project_link'],
+            'title' => [
+                'en' => $_POST['title_en'],
+                'fr' => $_POST['title_fr'],
+                'es' => $_POST['title_es'],
+                'it' => $_POST['title_it'],
+                'ru' => $_POST['title_ru']
+            ],
+            'category' => [
+                'en' => $_POST['cat_en'],
+                'fr' => $_POST['cat_fr'],
+                'es' => $_POST['cat_es'],
+                'it' => $_POST['cat_it'],
+                'ru' => $_POST['cat_ru']
+            ]
+        ];
+        
+        $projects[] = $newProject;
+        if (file_put_contents($portfolioFile, json_encode($projects, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
+            $message = "New portfolio project added successfully!";
+        } else {
+            $error = "Failed to save portfolio data.";
+        }
+    }
+}
+
+// Handle deleting a portfolio project
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_project'])) {
+    $deleteId = (int)$_POST['project_id'];
+    
+    $filteredProjects = [];
+    foreach ($projects as $p) {
+        if ($p['id'] !== $deleteId) {
+            $filteredProjects[] = $p;
+        } else {
+            // Delete image file from server in-place
+            $imageFile = __DIR__ . '/../' . $p['image'];
+            if (file_exists($imageFile) && strpos($p['image'], 'portfolio_project_') === 0) {
+                @unlink($imageFile);
+            }
+        }
+    }
+    
+    $projects = $filteredProjects;
+    if (file_put_contents($portfolioFile, json_encode($projects, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE))) {
+        $message = "Portfolio project deleted successfully!";
+    } else {
+        $error = "Failed to save portfolio updates.";
     }
 }
 
@@ -129,7 +209,11 @@ if (!empty($asset_css)) {
                 </a>
                 <a href="?tab=media" 
                    class="px-5 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'media' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
-                    IMAGES & MEDIA
+                    CORE IMAGES
+                </a>
+                <a href="?tab=portfolio" 
+                   class="px-5 py-2 text-xs font-bold font-display rounded transition-all <?php echo $activeTab === 'portfolio' ? 'bg-primary-fixed text-on-primary-fixed' : 'text-on-surface-variant hover:text-white'; ?>">
+                    PORTFOLIO PROJECTS
                 </a>
             </div>
         </div>
@@ -239,99 +323,152 @@ if (!empty($asset_css)) {
                 </div>
             </div>
 
-        <!-- ==================== TAB 2: IMAGES & MEDIA MANAGER ==================== -->
+        <!-- ==================== TAB 2: CORE IMAGES & LOGO ==================== -->
         <?php elseif ($activeTab === 'media'): ?>
             <div class="glass-panel p-8 border border-outline-variant/30 rounded">
                 <div class="mb-8 border-b border-outline-variant/20 pb-4">
                     <span class="font-code-sm text-xs text-primary-fixed uppercase tracking-widest">// Media Upload Center</span>
-                    <h3 class="font-display text-xl font-bold text-white mt-1">Replace Website Images</h3>
-                    <p class="font-code-sm text-xs text-outline mt-1">Upload new images to replace existing website assets. Ideal dimensions are recommended for layout preservation.</p>
+                    <h3 class="font-display text-xl font-bold text-white mt-1">Replace Site Branding & Main Banner</h3>
+                    <p class="font-code-sm text-xs text-outline mt-1">Upload files to replace core assets. Recommended dimensions will prevent layouts from shifting.</p>
                 </div>
 
                 <form method="POST" action="" enctype="multipart/form-data" class="space-y-8">
                     <input type="hidden" name="upload_media" value="1"/>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                         <!-- Hero Image Slot -->
                         <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
                             <div>
                                 <h4 class="font-display font-bold text-white text-sm">Main Hero Background</h4>
-                                <span class="font-code-sm text-[10px] text-outline">developia_hero.jpg &bull; Recommended: 1920x1080px</span>
+                                <span class="font-code-sm text-[10px] text-outline">developia_hero.jpg &bull; 1920x1080px</span>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <img src="../developia_hero.jpg" class="w-24 h-16 object-cover rounded border border-outline-variant/30" alt="Current Hero"/>
-                                <input type="file" name="hero" accept=".jpg,.jpeg" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
-                            </div>
-                        </div>
-
-                        <!-- Easy Dubbing Image Slot -->
-                        <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
-                            <div>
-                                <h4 class="font-display font-bold text-white text-sm">Easy Dubbing Cover</h4>
-                                <span class="font-code-sm text-[10px] text-outline">easydubbing.jpg &bull; Recommended: 800x600px</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <img src="../easydubbing.jpg" class="w-24 h-16 object-cover rounded border border-outline-variant/30" alt="Current Easy Dubbing"/>
-                                <input type="file" name="easydubbing" accept=".jpg,.jpeg" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
-                            </div>
-                        </div>
-
-                        <!-- TuneMusics Image Slot -->
-                        <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
-                            <div>
-                                <h4 class="font-display font-bold text-white text-sm">TuneMusics Cover</h4>
-                                <span class="font-code-sm text-[10px] text-outline">tunemusics.png &bull; Recommended: 800x600px</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <img src="../tunemusics.png" class="w-24 h-16 object-cover rounded border border-outline-variant/30" alt="Current TuneMusics"/>
-                                <input type="file" name="tunemusics" accept=".png" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
-                            </div>
-                        </div>
-
-                        <!-- Social AI Publisher Image Slot -->
-                        <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
-                            <div>
-                                <h4 class="font-display font-bold text-white text-sm">Social AI Publisher Cover</h4>
-                                <span class="font-code-sm text-[10px] text-outline">social_ai_publisher.png &bull; Recommended: 800x600px</span>
-                            </div>
-                            <div class="flex items-center gap-4">
-                                <img src="../social_ai_publisher.png" class="w-24 h-16 object-cover rounded border border-outline-variant/30" alt="Current Publisher"/>
-                                <input type="file" name="social_ai_publisher" accept=".png" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
-                            </div>
+                            <img src="../developia_hero.jpg" class="w-full h-32 object-cover rounded border border-outline-variant/30" alt="Current Hero"/>
+                            <input type="file" name="hero" accept=".jpg,.jpeg" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
                         </div>
 
                         <!-- Logo Image Slot -->
                         <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
                             <div>
                                 <h4 class="font-display font-bold text-white text-sm">Website Header Logo</h4>
-                                <span class="font-code-sm text-[10px] text-outline">logo.png &bull; Recommended: Transparent PNG</span>
+                                <span class="font-code-sm text-[10px] text-outline">logo.png &bull; Transparent PNG</span>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <img src="../logo.png" class="w-16 h-16 object-contain rounded border border-outline-variant/30 bg-background" alt="Current Logo"/>
-                                <input type="file" name="logo" accept=".png" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
+                            <div class="h-32 flex items-center justify-center bg-surface-container rounded border border-outline-variant/30">
+                                <img src="../logo.png" class="max-h-24 max-w-full object-contain" alt="Current Logo"/>
                             </div>
+                            <input type="file" name="logo" accept=".png" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
                         </div>
 
                         <!-- Favicon Image Slot -->
                         <div class="bg-surface-container-low border border-outline-variant/30 rounded p-6 space-y-4">
                             <div>
                                 <h4 class="font-display font-bold text-white text-sm">Tab Favicon Icon</h4>
-                                <span class="font-code-sm text-[10px] text-outline">favicon.png &bull; Recommended: 32x32px or 64x64px PNG</span>
+                                <span class="font-code-sm text-[10px] text-outline">favicon.png &bull; 32x32px or 64x64px PNG</span>
                             </div>
-                            <div class="flex items-center gap-4">
-                                <img src="../favicon.png" class="w-12 h-12 object-contain rounded border border-outline-variant/30 bg-background" alt="Current Favicon"/>
-                                <input type="file" name="favicon" accept=".png" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
+                            <div class="h-32 flex items-center justify-center bg-surface-container rounded border border-outline-variant/30">
+                                <img src="../favicon.png" class="w-16 h-16 object-contain" alt="Current Favicon"/>
                             </div>
+                            <input type="file" name="favicon" accept=".png" class="w-full text-xs text-outline file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
                         </div>
                     </div>
 
                     <div class="pt-8 border-t border-outline-variant/20 flex justify-end">
                         <button type="submit" class="bg-primary-fixed text-on-primary-fixed px-10 py-3 font-display font-bold hover:shadow-[0_0_20px_#0055ff] transition-all rounded active:scale-95 flex items-center gap-2">
                             <span class="material-symbols-outlined text-sm">cloud_upload</span>
-                            REPLACE SELECTED IMAGES
+                            REPLACE IMAGES
                         </button>
                     </div>
                 </form>
+            </div>
+
+        <!-- ==================== TAB 3: PORTFOLIO MANAGER ==================== -->
+        <?php elseif ($activeTab === 'portfolio'): ?>
+            <div class="space-y-8">
+                <!-- Existing Projects Grid -->
+                <div class="glass-panel p-8 border border-outline-variant/30 rounded">
+                    <h3 class="font-display text-lg font-bold text-white mb-6 uppercase tracking-wider">// Existing Portfolio Projects</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <?php if (empty($projects)): ?>
+                            <p class="text-outline font-code-sm text-sm col-span-3">No portfolio projects configured.</p>
+                        <?php else: ?>
+                            <?php foreach ($projects as $proj): ?>
+                                <div class="bg-surface-container-low border border-outline-variant/30 rounded overflow-hidden flex flex-col justify-between h-[300px]">
+                                    <div class="relative h-40">
+                                        <img src="../<?php echo htmlspecialchars($proj['image']); ?>" class="w-full h-full object-cover" alt="Project image"/>
+                                        <div class="absolute inset-0 bg-black/40 flex items-start justify-end p-2">
+                                            <form method="POST" action="" onsubmit="return confirm('Delete this project?')">
+                                                <input type="hidden" name="delete_project" value="1"/>
+                                                <input type="hidden" name="project_id" value="<?php echo $proj['id']; ?>"/>
+                                                <button type="submit" class="bg-red-500/90 text-white p-2 rounded hover:bg-red-600 transition-colors flex items-center justify-center">
+                                                    <span class="material-symbols-outlined text-sm">delete</span>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="p-4 space-y-2 flex-grow">
+                                        <h4 class="font-display font-bold text-white text-base leading-tight"><?php echo htmlspecialchars($proj['title']['en']); ?></h4>
+                                        <p class="font-code-sm text-xs text-primary-fixed uppercase tracking-wider"><?php echo htmlspecialchars($proj['category']['en']); ?></p>
+                                        <a href="<?php echo htmlspecialchars($proj['link']); ?>" target="_blank" class="font-code-sm text-[11px] text-outline hover:underline truncate block"><?php echo htmlspecialchars($proj['link']); ?></a>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                </div>
+
+                <!-- Add New Project Form -->
+                <div class="glass-panel p-8 border border-outline-variant/30 rounded">
+                    <div class="mb-6 border-b border-outline-variant/20 pb-4">
+                        <span class="font-code-sm text-xs text-primary-fixed uppercase tracking-widest">// Expansion Panel</span>
+                        <h3 class="font-display text-xl font-bold text-white mt-1">Add New Portfolio Project</h3>
+                    </div>
+
+                    <form method="POST" action="" enctype="multipart/form-data" class="space-y-6">
+                        <input type="hidden" name="add_project" value="1"/>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Link & Image -->
+                            <div class="space-y-4">
+                                <div class="space-y-2">
+                                    <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Project Redirect Link (URL)</label>
+                                    <input type="url" name="project_link" required placeholder="https://..." class="w-full bg-surface-container border border-outline-variant rounded px-4 py-3 text-on-surface font-display text-sm focus:border-primary-fixed-dim focus:outline-none"/>
+                                </div>
+                                <div class="space-y-2">
+                                    <label class="block font-code-sm text-xs text-outline uppercase font-semibold">Project Cover Image</label>
+                                    <input type="file" name="project_image" required accept=".png,.jpg,.jpeg" class="w-full text-xs text-outline file:mr-4 file:py-2.5 file:px-4 file:rounded file:border-0 file:text-xs file:font-semibold file:bg-primary-fixed/20 file:text-primary-fixed hover:file:bg-primary-fixed/30 cursor-pointer"/>
+                                </div>
+                            </div>
+                            
+                            <!-- Categories & Titles -->
+                            <div class="space-y-4 bg-surface-container-low border border-outline-variant/20 rounded p-6">
+                                <h4 class="font-display text-xs font-bold text-white uppercase tracking-wider mb-2">// Multi-language Project Details</h4>
+                                
+                                <div class="space-y-4 max-h-[250px] overflow-y-auto pr-2">
+                                    <?php foreach ($languages as $code => $name): ?>
+                                        <div class="grid grid-cols-2 gap-4 border-b border-outline-variant/10 pb-3 last:border-0">
+                                            <div class="space-y-1 col-span-2 font-code-sm text-[10px] text-primary-fixed uppercase tracking-wider font-bold">
+                                                <?php echo $name; ?> (<?php echo strtoupper($code); ?>)
+                                            </div>
+                                            <div class="space-y-1">
+                                                <input type="text" name="title_<?php echo $code; ?>" required placeholder="Title in <?php echo $code; ?>" class="w-full bg-surface-container border border-outline-variant rounded px-3 py-1.5 text-on-surface font-display text-xs focus:border-primary-fixed-dim focus:outline-none"/>
+                                            </div>
+                                            <div class="space-y-1">
+                                                <input type="text" name="cat_<?php echo $code; ?>" required placeholder="Category in <?php echo $code; ?>" class="w-full bg-surface-container border border-outline-variant rounded px-3 py-1.5 text-on-surface font-display text-xs focus:border-primary-fixed-dim focus:outline-none"/>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-6 border-t border-outline-variant/20 flex justify-end">
+                            <button type="submit" class="bg-primary-fixed text-on-primary-fixed px-10 py-3 font-display font-bold hover:shadow-[0_0_20px_#0055ff] transition-all rounded active:scale-95 flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">add_box</span>
+                                ADD TO PORTFOLIO
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         <?php endif; ?>
     </main>

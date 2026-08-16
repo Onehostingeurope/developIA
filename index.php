@@ -223,6 +223,13 @@ require_once __DIR__ . '/includes/header.php';
         </section>
 
         <!--  PORTFOLIO  -->
+        <?php
+        $portfolioFile = __DIR__ . '/portfolio.json';
+        $projects = [];
+        if (file_exists($portfolioFile)) {
+            $projects = json_decode(file_get_contents($portfolioFile), true) ?: [];
+        }
+        ?>
         <section id="portfolio" class="py-28 px-margin-mobile relative z-10">
             <div class="max-w-container-max mx-auto">
                 <div class="mb-16">
@@ -230,33 +237,22 @@ require_once __DIR__ . '/includes/header.php';
                     <h2 class="font-display font-extrabold text-4xl md:text-5xl text-on-surface mb-4" data-i18n="index.port_title_alt"><?php echo __t('index.port_title_alt'); ?></h2>
                     <div class="h-1 w-24 bg-primary-fixed"></div>
                 </div>
-                <div class="grid grid-cols-1 md:grid-cols-12 gap-gutter h-auto md:h-[600px]">
-                    <a href="<?php echo __t('index.port_link_1'); ?>" target="_blank" rel="noopener" class="md:col-span-8 glass-card relative group overflow-hidden h-[400px] md:h-full block cursor-pointer">
-                        <img alt="Easy Dubbing Platform" class="absolute inset-0 w-full h-full object-contain opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 z-0" src="easydubbing.jpg"/>
-                        <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-background/90 via-background/40 to-transparent z-10">
-                            <span class="font-mono text-xs text-primary-fixed mb-2 block tracking-widest uppercase" data-i18n="index.port_cat_1"><?php echo __t('index.port_cat_1'); ?></span>
-                            <h3 class="font-display text-2xl font-bold text-on-surface mb-2" data-i18n="index.port_name_1"><?php echo __t('index.port_name_1'); ?></h3>
-                            <div class="inline-flex items-center gap-2 font-mono text-sm text-primary-fixed group-hover:translate-x-2 transition-transform">
-                                <span data-i18n="index.port_view_alt"><?php echo __t('index.port_view_alt'); ?></span> <span class="material-symbols-outlined text-lg">arrow_forward</span>
-                            </div>
-                        </div>
-                    </a>
-                    <div class="md:col-span-4 flex flex-col gap-gutter">
-                        <a href="<?php echo __t('index.port_link_2'); ?>" target="_blank" rel="noopener" class="h-1/2 glass-card relative group overflow-hidden block cursor-pointer">
-                            <img alt="TuneMusics Platform" class="absolute inset-0 w-full h-full object-contain opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 z-0" src="tunemusics.png"/>
-                            <div class="absolute inset-0 p-8 flex flex-col justify-end z-10 bg-gradient-to-t from-background/90 via-background/20 to-transparent">
-                                <span class="font-mono text-xs text-primary-fixed mb-1 block tracking-widest uppercase" data-i18n="index.port_cat_2"><?php echo __t('index.port_cat_2'); ?></span>
-                                <h3 class="font-display text-xl font-bold text-on-surface" data-i18n="index.port_name_2"><?php echo __t('index.port_name_2'); ?></h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+                    <?php foreach ($projects as $proj): 
+                        $title = $proj['title'][$lang] ?? ($proj['title']['en'] ?? '');
+                        $category = $proj['category'][$lang] ?? ($proj['category']['en'] ?? '');
+                    ?>
+                        <a href="<?php echo htmlspecialchars($proj['link']); ?>" target="_blank" rel="noopener" class="glass-card relative group overflow-hidden h-[380px] block cursor-pointer rounded-xl border border-outline-variant/30">
+                            <img alt="<?php echo htmlspecialchars($title); ?>" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:opacity-95 group-hover:scale-[1.02] transition-all duration-700 z-0" src="<?php echo htmlspecialchars($proj['image']); ?>"/>
+                            <div class="absolute bottom-0 left-0 w-full p-8 bg-gradient-to-t from-background/95 via-background/60 to-transparent z-10">
+                                <span class="font-mono text-xs text-primary-fixed mb-2 block tracking-widest uppercase"><?php echo htmlspecialchars($category); ?></span>
+                                <h3 class="font-display text-2xl font-bold text-on-surface mb-2"><?php echo htmlspecialchars($title); ?></h3>
+                                <div class="inline-flex items-center gap-2 font-mono text-sm text-primary-fixed group-hover:translate-x-2 transition-transform">
+                                    <span data-i18n="index.port_view_alt"><?php echo __t('index.port_view_alt'); ?></span> <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                                </div>
                             </div>
                         </a>
-                        <a href="<?php echo __t('index.port_link_3'); ?>" target="_blank" rel="noopener" class="h-1/2 glass-card relative group overflow-hidden block cursor-pointer">
-                            <img alt="Social AI Publisher" class="absolute inset-0 w-full h-full object-contain opacity-85 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700 z-0" src="social_ai_publisher.png"/>
-                            <div class="absolute inset-0 p-8 flex flex-col justify-end z-10 bg-gradient-to-t from-background/90 via-background/20 to-transparent">
-                                <span class="font-mono text-xs text-primary-fixed mb-1 block tracking-widest uppercase" data-i18n="index.port_cat_3"><?php echo __t('index.port_cat_3'); ?></span>
-                                <h3 class="font-display text-xl font-bold text-on-surface" data-i18n="index.port_name_3"><?php echo __t('index.port_name_3'); ?></h3>
-                            </div>
-                        </a>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
