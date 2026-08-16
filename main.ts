@@ -35,7 +35,7 @@ class I18nEngine {
 
     private getTranslationValue(lang: string, path: string): string | undefined {
         const keys = path.split('.');
-        let current: any = translations[lang];
+        let current: any = (window as any).siteTranslations ? (window as any).siteTranslations[lang] : (translations as any)[lang];
         for (const key of keys) {
             if (current && typeof current === 'object') {
                 current = current[key];

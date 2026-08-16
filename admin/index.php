@@ -92,6 +92,7 @@ if (!empty($asset_css)) {
         </div>
         <div class="flex items-center gap-4">
             <span class="font-code-sm text-xs text-outline">User: <strong class="text-white"><?php echo htmlspecialchars($_SESSION['admin_user'] ?? 'Admin'); ?></strong></span>
+            <a href="cms.php" class="font-code-sm text-xs text-primary-fixed hover:text-primary-fixed-dim font-bold">CMS Editor</a>
             <a href="../index.php" target="_blank" class="font-code-sm text-xs text-on-surface-variant hover:text-primary">&rarr; View Website</a>
             <a href="?action=logout" class="font-code-sm text-xs text-red-400 hover:text-red-300 ml-4">Logout</a>
         </div>

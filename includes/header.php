@@ -34,7 +34,9 @@ if (!empty($asset_css)) {
     <link rel="stylesheet" href="/style.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&amp;family=Geist:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css"/>
+    <script>
+        window.siteTranslations = <?php echo json_encode($translations); ?>;
+    </script>
 </head>
 <body class="antialiased bg-background text-on-surface">
     <!-- TopNavBar -->
